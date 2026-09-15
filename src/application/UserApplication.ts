@@ -1,0 +1,75 @@
+import bcrypt from "bcryptjs";
+import type { User } from "../domain/User";
+import type { UserPort } from "../domain/UserPort";
+import { AuthApplication } from "./AuthApplication";
+
+export class UserApplication{
+    private port: UserPort;
+
+    constructor(port: UserPort){
+        this.port = port;
+    }
+
+    async login(email:string, password:string):Promise<string>{
+        const existUser = await this.port.getUserByEmail(email);
+        if(!existUser){
+            throw new Error("Credenciales invalidas");
+        }
+
+        const passMatch = await bcrypt.compare(password, existUser.contraseña);
+        if(!passMatch){
+            throw new Error ("Credenciales invalidas");
+        }
+        const token = AuthApplication.generateToken({
+            id: existUser.id,
+            email: existUser.email
+        });
+        return token;
+    }   
+
+    async createUser(user:Omit<User, "id">):Promise<number>{
+        //antes de crear un usuario debo validar: el email no existe
+        const existUser = await this.port.getUserByEmail(user.email);
+        if(existUser){
+            throw new Error("Este email ya está registrado");
+        }
+        //Hashear la pss antes de guardar
+        const hashedPassword = await bcrypt.hash(user.contraseña, 12);
+        user.contraseña = hashedPassword;
+        return this.port.createUser(user);
+    }
+
+    async getUserById(id:number):Promise<User | null>{
+        return await this.port.getUserById(id);
+    }
+
+    async getUserByEmail(email:string):Promise<User | null>{
+        return await this.port.getUserByEmail(email);
+    }
+
+    async getUserByRol(rol: string): Promise<User[] | null> {
+        return await this.port.getUserByRol(rol);
+    }
+
+    async getAllUsers():Promise<User[]>{
+        return await this.port.getAllUsers();
+    }
+
+    async updateUser(id:number, user: Partial<User>): Promise<boolean>{
+        const existingUser = await this.port.getUserById(id);
+        if(!existingUser){
+            throw new Error("Usuario no encontrado")
+        }
+        if (user.email){
+            const emailTaken = await this.port.getUserByEmail(user.email);
+            if (emailTaken && emailTaken.id !== id){
+                throw new Error("El email ya está en uso");
+            }
+        }
+        return this.port.updateUser(id, user);
+    }
+
+    async deleteUser(id:number): Promise<boolean>{
+        return await this.port.deleteUser(id);
+    }
+}
