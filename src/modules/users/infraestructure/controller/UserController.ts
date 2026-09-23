@@ -1,9 +1,9 @@
 import type { UserApplication } from "../../application/UserApplication";
 import type { Request, Response } from "express";
-import { loadUserData } from "../util/user-validation";
+import { loadUserData } from "../../../../shared/util/user-validation";
 import type { User } from "../../domain/User";
-import { loadUpdateUserData } from "../util/user-update-validation";
-import { loadEmail } from "../util/email.validation";
+import { loadUpdateUserData } from "../../../../shared/util/user-update-validation";
+import { loadEmail } from "../../../../shared/util/email.validation";
 
 export class UserController {
 

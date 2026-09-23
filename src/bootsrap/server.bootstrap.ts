@@ -1,6 +1,6 @@
 import express from "express";
 import http from "http";
-import envs from "../config/environment-vars"
+import envs from "../shared/config/environment-vars"
 //
 
 export class ServerBootStrap{

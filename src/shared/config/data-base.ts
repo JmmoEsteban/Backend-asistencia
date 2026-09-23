@@ -1,7 +1,8 @@
 import dotenv from "dotenv";
-import { User } from "../entities/User";
+import { User } from "../../modules/users/infraestructure/entities/User";
 import { DataSource } from "typeorm";
 import envs from "./environment-vars"
+import { Attendance } from "../../modules/attendance/infraestructure/entities/Attendance";
 
 dotenv.config();
 export const AppDataSource = new DataSource ({
@@ -12,7 +13,7 @@ export const AppDataSource = new DataSource ({
     database: envs.DB_NAME,
     synchronize: true,
     logging:true,
-    entities: [User],
+    entities: [User, Attendance],
 });
 
 //conectar a la DB

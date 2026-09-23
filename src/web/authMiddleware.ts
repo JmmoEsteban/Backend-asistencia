@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import { AuthApplication } from "../../application/AuthApplication";
+import { AuthApplication } from "../modules/users/application/AuthApplication";
 
 export function authenticateToken(req:Request, res:Response, next: NextFunction): void{
     const authHeader = req.headers["authorization"];

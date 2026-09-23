@@ -2,7 +2,7 @@ import { Router } from "express";
 import { UserAdapter } from "../adapter/UserAdapter";
 import { UserApplication } from "../../application/UserApplication";
 import { UserController } from "../controller/UserController";
-import { authenticateToken } from "../web/authMiddleware";
+import { authenticateToken } from "../../../../web/authMiddleware";
 
 const router = Router();
 //inicaializacion de las capas
