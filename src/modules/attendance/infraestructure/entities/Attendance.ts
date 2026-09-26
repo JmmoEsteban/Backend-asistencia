@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Session } from "../../../session/infraestructure/entities/Session";
+import { User } from "../../../users/infraestructure/entities/User";
 
 @Entity()
 export class Attendance {
@@ -6,10 +8,12 @@ export class Attendance {
     id_attendance!: number;
     @Column({ type: "date"})
     date_attendance!: Date;
-    @Column({ type: "int"})
-    id_user!: number;
-    @Column({ type: "int"})
-    id_session!: number;
+    @ManyToOne(() => User)
+    @JoinColumn({ name: "id_user"})
+    id_user!: User;
+    @ManyToOne(() => Session)
+    @JoinColumn({ name: "id_session"})
+    id_session!: Session;
     @Column({ type: "int"})
     status_attendance!: number;
 }
