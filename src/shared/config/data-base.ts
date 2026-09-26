@@ -4,6 +4,9 @@ import { DataSource } from "typeorm";
 import envs from "./environment-vars"
 import { Attendance } from "../../modules/attendance/infraestructure/entities/Attendance";
 import { Session } from "../../modules/session/infraestructure/entities/Session";
+import { Group } from "../../modules/groups/infraestructure/entities/Group";
+import { Promotion } from "../../modules/promotions/infraestructure/entities/Promotion";
+
 
 dotenv.config();
 export const AppDataSource = new DataSource ({
@@ -14,7 +17,7 @@ export const AppDataSource = new DataSource ({
     database: envs.DB_NAME,
     synchronize: true,
     logging:true,
-    entities: [User, Attendance, Session],
+    entities: [User, Attendance, Session, Group, Promotion],
 });
 
 //conectar a la DB

@@ -20,7 +20,7 @@ export class User{
     @Column({type: "character varying", nullable:true, length: 255})
         microsoft_id!:string;
     
-    @Column({type: "character varying", nullable:false, length: 20, default: () => 'local'})
+    @Column({type: "character varying", nullable:false, length: 20, default: 'local'})
         auth_provider!:string;
     
     @Column({type: "character varying", nullable:true, length: 150})

@@ -3,6 +3,8 @@ import cors from "cors";
 import userRoutes from "../modules/users/infraestructure/routes/UserRoutes";
 import AttendanceRoutes from "../modules/attendance/infraestructure/routes/AttendanceRoutes";
 import SessionRoutes from "../modules/session/infraestructure/routes/SessionRoutes";
+import GroupRoutes from "../modules/groups/infraestructure/routes/GroupRoutes";
+import PromotionRoutes from "../modules/promotions/infraestructure/routes/PromotionRoutes";
 
 class App{
     private app: express.Application;
@@ -21,7 +23,9 @@ class App{
     private routes(): void{
         this.app.use("/api",userRoutes);
         this.app.use("/api",AttendanceRoutes);
-        this.app.use("/api", SessionRoutes)
+        this.app.use("/api", SessionRoutes);
+        this.app.use("/api", GroupRoutes);
+        this.app.use("/api", PromotionRoutes);
     }
 
     getApp(){
