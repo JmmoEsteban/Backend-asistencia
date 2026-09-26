@@ -1,7 +1,7 @@
 import type { Repository } from "typeorm";
-import type { User as UserDomain} from "../../domain/User";
-import type { UserPort } from "../../domain/UserPort";
-import {User as UserEntity} from "../entities/User"
+import type { User as UserDomain} from "../../domain/Roles";
+import type { UserPort } from "../../domain/RolesPort";
+import {User as UserEntity} from "../entities/Roles"
 import { AppDataSource } from "../../../../shared/config/data-base";
 
 export class UserAdapter implements UserPort{
