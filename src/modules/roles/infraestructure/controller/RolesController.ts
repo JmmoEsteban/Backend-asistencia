@@ -1,7 +1,7 @@
-import type { UserApplication } from "../../application/UserApplication";
+import type { UserApplication } from "../../application/RolesApplication";
 import type { Request, Response } from "express";
 import { loadUserData } from "../../../../shared/util/user-validation";
-import type { User } from "../../domain/User";
+import type { User } from "../../domain/Roles";
 import { loadUpdateUserData } from "../../../../shared/util/user-update-validation";
 import { loadEmail } from "../../../../shared/util/email.validation";
 
