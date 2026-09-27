@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm"; // en este archivo estamos haciendo el mapeo de la base de datos exportamos la clase para ser usada posteriormente 
-import { Program } from "../../../programs/infraestructure/entities/Program";
+// import { Program } from "../../../programs/infraestructure/entities/Program";
 import { Promotion } from "../../../promotions/infraestructure/entities/Promotion";
 
 @Entity('groups')// usamos el decorador entity

@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Program } from "../../../programs/infraestructure/entities/Program";
+// import { Program } from "../../../programs/infraestructure/entities/Program";
 
 @Entity("promotions")
 export class Promotion {
