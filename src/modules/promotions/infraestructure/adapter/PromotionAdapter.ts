@@ -17,7 +17,6 @@ export class PromotionAdapter implements PromotionPort {
             name_promotion: promotion.name_promotion,
             id_programs: promotion.id_programs,
             status_promotions: promotion.status_promotions,
-            program: promotion.program,
         };
     }
 
@@ -74,7 +73,7 @@ export class PromotionAdapter implements PromotionPort {
 
     async getPromotionById(id: number): Promise<PromotionDomain | null> {
         try {
-            const promotion = await this.promotionRepository.findOne({ where: { id_promotion: id }, relations: { program: true } });
+            const promotion = await this.promotionRepository.findOne({ where: { id_promotion: id }});
             return promotion ? this.toDomain(promotion) : null;
         } catch (error) {
             console.error("Error obteniendo promocion por ID", error);
@@ -84,7 +83,7 @@ export class PromotionAdapter implements PromotionPort {
 
     async getAllPromotions(): Promise<PromotionDomain[]> {
         try {
-            const promotions = await this.promotionRepository.find({ relations: { program: true } });
+            const promotions = await this.promotionRepository.find();
             return promotions.map((p) => this.toDomain(p));
         } catch (error) {
             console.error("Error obteniendo todas las promociones", error);
@@ -94,7 +93,7 @@ export class PromotionAdapter implements PromotionPort {
 
     async getPromotionsByProgram(programId: number): Promise<PromotionDomain[] | null> {
         try {
-            const promotions = await this.promotionRepository.find({ where: { id_programs: programId }, relations: { program: true } });
+            const promotions = await this.promotionRepository.find({ where: { id_programs: programId }});
             return promotions ? promotions.map((p) => this.toDomain(p)) : null;
         } catch (error) {
             console.error("Error obteniendo promociones por programa", error);

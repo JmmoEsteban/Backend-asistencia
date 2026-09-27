@@ -10,10 +10,10 @@ export class Attendance {
     date_attendance!: Date;
     @ManyToOne(() => User)
     @JoinColumn({ name: "id_user"})
-    id_user!: User;
+    id_user!: number;
     @ManyToOne(() => Session)
     @JoinColumn({ name: "id_session"})
-    id_session!: Session;
+    id_session!: number;
     @Column({ type: "int"})
     status_attendance!: number;
 }

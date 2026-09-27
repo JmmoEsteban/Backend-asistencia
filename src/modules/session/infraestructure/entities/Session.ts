@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Group } from "../../../groups/infraestructure/entities/Group";
 
 @Entity()
 export class Session {
@@ -8,7 +9,8 @@ export class Session {
     date_session!: Date;
     @Column({ type: "int"})
     day_session!: number;
-    @Column({ type: "int"})
+    @JoinColumn({ name: "groups"})
+    @ManyToOne(() => Group)
     id_group!: number;
     @Column({ type: "int"})
     status_session!: number;

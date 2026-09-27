@@ -8,6 +8,5 @@ export interface Group {
     id_promotions: number;
     id_programs: number;
     status_group: number;
-    program?: Program;
     promotion?: Promotion;
 }

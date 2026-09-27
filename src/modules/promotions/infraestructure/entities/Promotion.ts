@@ -15,7 +15,7 @@ export class Promotion {
     @Column({ type: "int" })
     status_promotions!: number;
 
-    @ManyToOne(() => Program)
-    @JoinColumn({ name: "id_programs" })
-    program!: Program;
+    // @ManyToOne(() => Program)
+    @Column({ type: "int" })
+    program!: number;
 }

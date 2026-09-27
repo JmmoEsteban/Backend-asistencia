@@ -22,9 +22,8 @@ export class Group{
     @Column({type:"int"})
     status_group!:number;
 
-    @ManyToOne(() => Program)
-    @JoinColumn({ name: "id_programs" })
-    program!: Program;
+    @Column({ type: "int" })
+    program!: number;
 
     @ManyToOne(() => Promotion)
     @JoinColumn({ name: "id_promotions" })
