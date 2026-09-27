@@ -14,44 +14,44 @@ export class UserAdapter implements UserPort{
 
     private toDomain(user: UserEntity): UserDomain{
         return{
-            id: user.id,
-            first_name: user.first_name,
-            last_name: user.last_name,
-            email: user.email,
-            password: user.password,
-            microsoft_id: user.microsoft_id,
-            auth_provider: user.auth_provider,
-            job_title: user.job_title,
-            department: user.department,
-            office_location: user.office_location,
-            mobile_phone: user.mobile_phone,
-            business_phones: user.business_phones,
-            permissions: user.permissions,
-            role_id: user.role_id,
-            program_id: user.program_id,
-            status_id: user.status_id,
-            created_at: user.created_at   
+            user_id: user.id,
+            user_first_name: user.first_name,
+            user_last_name: user.last_name,
+            user_email: user.email,
+            user_password: user.password,
+            user_microsoft_id: user.microsoft_id,
+            user_auth_provider: user.auth_provider,
+            user_job_title: user.job_title,
+            user_department: user.department,
+            user_office_location: user.office_location,
+            user_mobile_phone: user.mobile_phone,
+            user_business_phones: user.business_phones,
+            user_permissions: user.permissions,
+            user_role_id: user.role_id,
+            user_program_id: user.program_id,
+            user_status_id: user.status_id,
+            user_created_at: user.created_at   
         }
     }
 
     private toEntity(user: Omit<UserDomain, "id">):UserEntity{
         const userEntity = new UserEntity();
-        userEntity.first_name = user.first_name;
-        userEntity.last_name = user.last_name;
-        userEntity.email = user.email;
-        userEntity.password = user.password,
-        userEntity.microsoft_id = user.microsoft_id,
-        userEntity.auth_provider = user.auth_provider,
-        userEntity.job_title = user.job_title,
-        userEntity.department = user.department,
-        userEntity.office_location = user.office_location,
-        userEntity.mobile_phone = user.mobile_phone,
-        userEntity.business_phones = user.business_phones,
-        userEntity.permissions = user.permissions,
-        userEntity.role_id = user.role_id,
-        userEntity.program_id = user.program_id,
-        userEntity.status_id = user.status_id,
-        userEntity.created_at = user.created_at  
+        userEntity.first_name = user.user_first_name;
+        userEntity.last_name = user.user_last_name;
+        userEntity.email = user.user_email;
+        userEntity.password = user.user_password,
+        userEntity.microsoft_id = user.user_microsoft_id,
+        userEntity.auth_provider = user.user_auth_provider,
+        userEntity.job_title = user.user_job_title,
+        userEntity.department = user.user_department,
+        userEntity.office_location = user.user_office_location,
+        userEntity.mobile_phone = user.user_mobile_phone,
+        userEntity.business_phones = user.user_business_phones,
+        userEntity.permissions = user.user_permissions,
+        userEntity.role_id = user.user_role_id,
+        userEntity.program_id = user.user_program_id,
+        userEntity.status_id = user.user_status_id,
+        userEntity.created_at = user.user_created_at  
         return userEntity;
     }
 
@@ -71,22 +71,22 @@ export class UserAdapter implements UserPort{
             if (!existingUser) return false;
 
             Object.assign(existingUser, {
-                first_name_user: user.first_name ?? existingUser.first_name,
-                last_name_user: user.last_name ?? existingUser.last_name,
-                email_user: user.email ?? existingUser.email,
-                password_user: user.password ?? existingUser.password,
-                microsoft_id_user: user.microsoft_id ?? existingUser.microsoft_id,
-                auth_provider_user: user.auth_provider ?? existingUser.auth_provider,
-                job_title_user: user.job_title ?? existingUser.job_title,
-                department_user: user.department ?? existingUser.department,
-                office_location_user: user.office_location ?? existingUser.office_location,
-                mobile_phone_user: user.mobile_phone ?? existingUser.mobile_phone,
-                business_phones_user: user.business_phones ?? existingUser.business_phones,
-                permissions_user: user.permissions ?? existingUser.permissions,
-                role_id_user: user.role_id ?? existingUser.role_id,
-                program_id_user: user.program_id ?? existingUser.program_id,
-                status_id_user: user.status_id ?? existingUser.status_id,
-                created_at_user: user.created_at ?? existingUser.created_at 
+                first_name_user: user.user_first_name ?? existingUser.first_name,
+                last_name_user: user.user_last_name ?? existingUser.last_name,
+                email_user: user.user_email ?? existingUser.email,
+                password_user: user.user_password ?? existingUser.password,
+                microsoft_id_user: user.user_microsoft_id ?? existingUser.microsoft_id,
+                auth_provider_user: user.user_auth_provider ?? existingUser.auth_provider,
+                job_title_user: user.user_job_title ?? existingUser.job_title,
+                department_user: user.user_department ?? existingUser.department,
+                office_location_user: user.user_office_location ?? existingUser.office_location,
+                mobile_phone_user: user.user_mobile_phone ?? existingUser.mobile_phone,
+                business_phones_user: user.user_business_phones ?? existingUser.business_phones,
+                permissions_user: user.user_permissions ?? existingUser.permissions,
+                role_id_user: user.user_role_id ?? existingUser.role_id,
+                program_id_user: user.user_program_id ?? existingUser.program_id,
+                status_id_user: user.user_status_id ?? existingUser.status_id,
+                created_at_user: user.user_created_at ?? existingUser.created_at 
             });
             await this.userRepository.save(existingUser);
             return true;
@@ -127,23 +127,23 @@ export class UserAdapter implements UserPort{
         if (!user) return null;
         
         return {
-            id: user.id,
-            first_name: user.first_name,
-            last_name: user.last_name,
-            email: user.email,
-            password: user.password,
-            microsoft_id: user.microsoft_id,
-            auth_provider: user.auth_provider,
-            job_title: user.job_title,
-            department: user.department,
-            office_location: user.office_location,
-            mobile_phone: user.mobile_phone,
-            business_phones: user.business_phones,
-            permissions: user.permissions,
-            role_id: user.role_id,
-            program_id: user.program_id,
-            status_id: user.status_id,
-            created_at: user.created_at
+            user_id: user.id,
+            user_first_name: user.first_name,
+            user_last_name: user.last_name,
+            user_email: user.email,
+            user_password: user.password,
+            user_microsoft_id: user.microsoft_id,
+            user_auth_provider: user.auth_provider,
+            user_job_title: user.job_title,
+            user_department: user.department,
+            user_office_location: user.office_location,
+            user_mobile_phone: user.mobile_phone,
+            user_business_phones: user.business_phones,
+            user_permissions: user.permissions,
+            user_role_id: user.role_id,
+            user_program_id: user.program_id,
+            user_status_id: user.status_id,
+            user_created_at: user.created_at
         }
     }
 
