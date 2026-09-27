@@ -16,16 +16,16 @@ export class SubjectsAdapter implements SubjectsPort{
 
     private toDomain(subjects: SubjectsEntity): SubjectsDomain{
         return{
-            id: subjects.id_subject,
-            name: subjects.name_subject,
-            status: subjects.status_subject
+            id: subjects.id_subjects,
+            name: subjects.name_subjects,
+            status: subjects.status_subjects
         }
     }
 
     private toEntity(subjects: Omit<SubjectsDomain, "id">): SubjectsEntity{
         const subjectsEntity = new SubjectsEntity();
-        subjectsEntity.name_subject = subjects.name;
-        subjectsEntity.status_subject = subjects.status;
+        subjectsEntity.name_subjects = subjects.name;
+        subjectsEntity.status_subjects = subjects.status;
         return subjectsEntity;
     }
 
@@ -33,7 +33,7 @@ export class SubjectsAdapter implements SubjectsPort{
         try {
             const newSubjects = this.toEntity(subjects);
             const savedSubjects = await this.subjectsRepository.save(newSubjects);
-            return savedSubjects.id_subject;
+            return savedSubjects.id_subjects;
         } catch (error) {
             console.error("Error creando materia", error);
             throw new Error("Error al crear materia");
@@ -41,12 +41,12 @@ export class SubjectsAdapter implements SubjectsPort{
     }
     async updateSubjects(id: number, subjects: Partial<SubjectsDomain>): Promise<boolean> {
         try {
-            const existSubjects = await this.subjectsRepository.findOne({ where: { id_subject: id }});
+            const existSubjects = await this.subjectsRepository.findOne({ where: { id_subjects: id }});
             if (!existSubjects) return false;
 
             Object.assign(existSubjects, {
-                name_subjects: subjects.name ?? existSubjects.name_subject,
-                status_subjects: subjects.status ?? existSubjects.status_subject
+                name_subjects: subjects.name ?? existSubjects.name_subjects,
+                status_subjects: subjects.status ?? existSubjects.status_subjects
             });
 
             await this.subjectsRepository.save(existSubjects);
@@ -59,7 +59,7 @@ export class SubjectsAdapter implements SubjectsPort{
     }
     async deleteSubjects(id: number): Promise<boolean> {
         try {
-            const existSubjects = await this.subjectsRepository.findOne({where: {id_subject: id}});
+            const existSubjects = await this.subjectsRepository.findOne({where: {id_subjects: id}});
             if (!existSubjects) return false;
             Object.assign(existSubjects, {
                 status_subjects: 0
@@ -73,7 +73,7 @@ export class SubjectsAdapter implements SubjectsPort{
     }
     async getSubjectsById(id: number): Promise<SubjectsDomain | null> {
         try {
-            const subjects = await this.subjectsRepository.findOne({where: {id_subject: id}});
+            const subjects = await this.subjectsRepository.findOne({where: {id_subjects: id}});
             return subjects ? this.toDomain(subjects) : null;
         } catch (error) {
             console.error("Error obteniendo materia por ID");
@@ -82,7 +82,7 @@ export class SubjectsAdapter implements SubjectsPort{
     }
     async getSubjectsByName(name: string): Promise<SubjectsDomain[] | null> {
         try {
-            const subjects = await this.subjectsRepository.find({where: {name_subject: name}});
+            const subjects = await this.subjectsRepository.find({where: {name_subjects: name}});
             return subjects ? subjects.map(this.toDomain) : null;
         } catch (error) {
             console.error("Error obteniendo materias por nombre");
@@ -91,7 +91,7 @@ export class SubjectsAdapter implements SubjectsPort{
     }
     async getAllSubjects(): Promise<SubjectsDomain[]> {
         try {
-            const subjects = await this.subjectsRepository.find({where: {status_subject: 1}});
+            const subjects = await this.subjectsRepository.find({where: {status_subjects: 1}});
             return subjects.map(this.toDomain);
         } catch (error) {
             console.error("Error obteniendo todos las materias");
