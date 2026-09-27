@@ -97,6 +97,34 @@ export class AttendanceController{
         }
     }
 
+    async getAttendanceByDate(req: Request, res: Response): Promise<Response>{
+        try {
+            const dateParam = req.params.date
+            // const date = new Date(req.params.date);
+            if (!dateParam || Array.isArray(dateParam)){
+                return res.status(400).json({message: "Fecha invalida"});
+            }
+
+            const date = new Date(dateParam);
+            if(isNaN(date.getTime())) return res.status(400).json({ error: "Formato de fecha invalida"})
+
+            const attendance = await this.app.getAttendanceByDate(date);
+            if (!attendance)
+                return res.status(400).json({ message: "Asistencia no encontrada" });
+            return res.status(200).json(attendance);
+        } catch (error) {
+            if (error instanceof Error){
+                return res
+                    .status(500)
+                    .json({
+                        error: "Error interno del servidor",
+                        details: error.message,
+                    });
+            }
+            return res.status(500).json({ error: "Error interno del servidor" });
+        }
+    }
+
     async getAttendanceByUser(req: Request, res: Response): Promise<Response>{
         try {
             const id = Number(req.params.userid);

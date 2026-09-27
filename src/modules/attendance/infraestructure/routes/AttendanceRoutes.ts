@@ -33,6 +33,14 @@ router.get("/asistencias/id/:id", async (req, res)=>{
     }
 })
 
+router.get("/asistencias/date/:date", async (req, res)=>{
+    try {
+        await attendanceController.getAttendanceByDate(req, res);
+    } catch (error) {
+        res.status(500).json({ message: "Error en la obtencion de las asistencia por fecha"});
+    }
+})
+
 router.get("/asistencias/userid/:userid", async (req, res)=>{
     try {
         await attendanceController.getAttendanceByUser(req, res);
@@ -41,7 +49,7 @@ router.get("/asistencias/userid/:userid", async (req, res)=>{
     }
 })
 
-router.get("/asistencias/sesionid/:sesionid", async (req, res)=>{
+router.get("/asistencias/ /:sesionid", async (req, res)=>{
     try {
         await attendanceController.getAttendanceBySession(req, res);
     } catch (error) {
