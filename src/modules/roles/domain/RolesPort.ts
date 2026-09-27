@@ -1,12 +1,8 @@
-import type { User } from "./Roles";
+import type { Roles } from "./Roles";
 
-export interface UserPort{
+export interface RolePort{
  
-    createUser(user: Omit<User, "id">):Promise<number>;
-    updateUser(id:number, user:Partial<User>):Promise<boolean>;
-    deleteUser(id:number):Promise<boolean>;
-    getUserById(id:number):Promise<User | null>;
-    getUserByEmail(email:string): Promise<User | null>;
-    getUserByRol(rol: number): Promise<User[] | null>;
-    getAllUsers(): Promise<User[]>;
+    getRoleById(id_role:number):Promise<Roles | null>;
+    getRoleByName(name_role:string): Promise<Roles | null>;
+    getAllRoles(): Promise<Roles[]>;
 }

@@ -4,9 +4,13 @@ import { DataSource } from "typeorm";
 import envs from "./environment-vars"
 import { Attendance } from "../../modules/attendance/infraestructure/entities/Attendance";
 import { Session } from "../../modules/session/infraestructure/entities/Session";
+<<<<<<< Updated upstream
 import { Group } from "../../modules/groups/infraestructure/entities/Group";
 import { Promotion } from "../../modules/promotions/infraestructure/entities/Promotion";
 
+=======
+import { Role } from "../../modules/roles/infraestructure/entities/Roles";
+>>>>>>> Stashed changes
 
 dotenv.config();
 export const AppDataSource = new DataSource ({
@@ -17,7 +21,11 @@ export const AppDataSource = new DataSource ({
     database: envs.DB_NAME,
     synchronize: true,
     logging:true,
+<<<<<<< Updated upstream
     entities: [User, Attendance, Session, Group, Promotion],
+=======
+    entities: [User, Attendance, Session, Role],
+>>>>>>> Stashed changes
 });
 
 //conectar a la DB
