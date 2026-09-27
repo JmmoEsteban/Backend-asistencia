@@ -2,18 +2,18 @@ import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "t
 import { Session } from "../../../session/infraestructure/entities/Session";
 import { User } from "../../../users/infraestructure/entities/User";
 
-@Entity('attendance')
+@Entity('attendances')
 export class Attendance {
     @PrimaryGeneratedColumn()
-    id_attendance!: number;
+    id_attendances!: number;
     @Column({ type: "date"})
-    date_attendance!: Date;
+    date_attendances!: Date;
     @ManyToOne(() => User)
     @JoinColumn({ name: "id_user"})
-    id_user!: number;
+    User!: User;
     @ManyToOne(() => Session)
     @JoinColumn({ name: "id_session"})
-    id_session!: number;
+    Session!: Session;
     @Column({ type: "int"})
-    status_attendance!: number;
+    status_attendances!: number;
 }

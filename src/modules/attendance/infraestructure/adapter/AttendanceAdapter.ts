@@ -3,6 +3,8 @@ import type { Attendance as AttendanceDomain } from "../../domain/Attendance";
 import { Attendance as AttendanceEntity } from "../../infraestructure/entities/Attendance";
 import type { AttendancePort } from "../../domain/AttendancePort";
 import { AppDataSource } from "../../../../shared/config/data-base";
+import { Session } from "../../../session/infraestructure/entities/Session";
+import { User } from "../../../users/infraestructure/entities/User";
 //import { object } from "joi";
 
 export class AttendanceAdapter implements AttendancePort{
@@ -15,20 +17,22 @@ export class AttendanceAdapter implements AttendancePort{
 
     private toDomain(attendance: AttendanceEntity): AttendanceDomain{
         return{
-            id: attendance.id_attendance,
-            date: attendance.date_attendance,
-            user_id: attendance.id_user,
-            session_id: attendance.id_session,
-            status: attendance.status_attendance
+            id: attendance.id_attendances,
+            date: attendance.date_attendances,
+            user_id: attendance.User.id,
+            session_id: attendance.Session.id_session,
+            status: attendance.status_attendances,
+            user: attendance.User,
+            session: attendance.Session
         }
     }
 
     private toEntity(attendance: Omit<AttendanceDomain, "id">): AttendanceEntity{
         const attendanceEntity = new AttendanceEntity();
-        attendanceEntity.date_attendance = attendance.date;
-        attendanceEntity.id_user = attendance.user_id;
-        attendanceEntity.id_session = attendance.session_id;
-        attendanceEntity.status_attendance = attendance.status;
+        attendanceEntity.date_attendances = attendance.date;
+        attendanceEntity.User.id = attendance.user_id;
+        attendanceEntity.Session.id_session = attendance.session_id;
+        attendanceEntity.status_attendances = attendance.status;
         return attendanceEntity;
     }
 
@@ -36,7 +40,7 @@ export class AttendanceAdapter implements AttendancePort{
         try {
             const newAttendance = this.toEntity(attendance);
             const savedAttendance = await this.attendanceRepository.save(newAttendance);
-            return savedAttendance.id_attendance;
+            return savedAttendance.id_attendances;
         } catch (error) {
             console.error("Error creando asistencia", error);
             throw new Error("Error al crear asistencia");
@@ -44,14 +48,14 @@ export class AttendanceAdapter implements AttendancePort{
     }
     async updateAttendance(id: number, attendance: Partial<AttendanceDomain>): Promise<boolean> {
         try {
-            const existAttendance = await this.attendanceRepository.findOne({ where: { id_attendance: id }});
+            const existAttendance = await this.attendanceRepository.findOne({ where: { id_attendances: id }});
             if (!existAttendance) return false;
 
             Object.assign(existAttendance, {
-                date_attendance: attendance.date ?? existAttendance.date_attendance,
-                id_user: attendance.user_id ?? existAttendance.id_user,
-                id_session: attendance.session_id ?? existAttendance.id_session,
-                status_attendance: attendance.status ?? existAttendance.status_attendance
+                date_attendance: attendance.date ?? existAttendance.date_attendances,
+                id_user: attendance.user_id ?? existAttendance.User.id,
+                id_session: attendance.session_id ?? existAttendance.Session.id_session,
+                status_attendance: attendance.status ?? existAttendance.status_attendances
             });
 
             await this.attendanceRepository.save(existAttendance);
@@ -64,7 +68,7 @@ export class AttendanceAdapter implements AttendancePort{
     }
     async deleteAttendance(id: number): Promise<boolean> {
         try {
-            const existAttendance = await this.attendanceRepository.findOne({where: {id_attendance: id}});
+            const existAttendance = await this.attendanceRepository.findOne({where: {id_attendances: id}});
             if (!existAttendance) return false;
             Object.assign(existAttendance, {
                 status_attendance: 0
@@ -78,7 +82,7 @@ export class AttendanceAdapter implements AttendancePort{
     }
     async getAttendanceById(id: number): Promise<AttendanceDomain | null> {
         try {
-            const attendance = await this.attendanceRepository.findOne({where: {id_attendance: id}});
+            const attendance = await this.attendanceRepository.findOne({where: {id_attendances: id}, relations: {User: true, Session: true}});
             return attendance ? this.toDomain(attendance) : null;
         } catch (error) {
             console.error("Error obteniendo asistencia por ID");
@@ -87,7 +91,7 @@ export class AttendanceAdapter implements AttendancePort{
     }
     async getAttendanceByDate(date: Date): Promise<AttendanceDomain[] | null> {
         try {
-            const attendance = await this.attendanceRepository.find({where: {date_attendance: date}});
+            const attendance = await this.attendanceRepository.find({where: {date_attendances: date}, relations: {User: true, Session: true}});
             return attendance ? attendance.map(this.toDomain) : null;
         } catch (error) {
             console.error("Error obteniendo asistemcia por fecha");
@@ -96,7 +100,7 @@ export class AttendanceAdapter implements AttendancePort{
     }
     async getAttendanceBySession(Sessionid: number): Promise<AttendanceDomain[] | null> {
         try {
-            const attendance = await this.attendanceRepository.find({where: {id_session: Sessionid}});
+            const attendance = await this.attendanceRepository.find({where: {Session: {id_session:Sessionid}}, relations: {Session: true}});
             return attendance ? attendance.map(this.toDomain) : null;
         } catch (error) {
             console.error("Error obteniendo la asistencia por sesion");
@@ -105,7 +109,7 @@ export class AttendanceAdapter implements AttendancePort{
     }
     async getAttendanceByUser(Userid: number): Promise<AttendanceDomain[] | null> {
         try {
-            const attendance = await this.attendanceRepository.find({where: {id_user: Userid}});
+            const attendance = await this.attendanceRepository.find({where: {User: {id : Userid}}, relations: {User: true}});
             return attendance ? attendance.map(this.toDomain) : null;
         } catch (error) {
             console.error("Error obteniendo la asistencia por usuario", error);
@@ -114,7 +118,7 @@ export class AttendanceAdapter implements AttendancePort{
     }
     async getAllAttendance(): Promise<AttendanceDomain[]> {
         try {
-            const attendance = await this.attendanceRepository.find({where: {status_attendance: 1}});
+            const attendance = await this.attendanceRepository.find({where: {status_attendances: 1}, relations: {User: true, Session: true}});
             return attendance.map(this.toDomain);
         } catch (error) {
             console.error("Error obteniendo todas las asistencias");

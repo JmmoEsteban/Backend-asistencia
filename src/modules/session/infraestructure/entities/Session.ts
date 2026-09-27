@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Group } from "../../../groups/infraestructure/entities/Group";
 
-@Entity('session')
+@Entity('sessions')
 export class Session {
     @PrimaryGeneratedColumn()
     id_session!: number;
@@ -9,9 +9,9 @@ export class Session {
     date_session!: Date;
     @Column({ type: "int"})
     day_session!: number;
-    @JoinColumn({ name: "groups"})
+    @JoinColumn({ name: "id_group"})
     @ManyToOne(() => Group)
-    id_group!: number;
+    Group!: Group;
     @Column({ type: "int"})
     status_session!: number;
 }

@@ -9,9 +9,10 @@ export class Promotion {
 
     @Column({ type: "varchar", length: 150 })
     name_promotion!: string;
-
-    @Column({ type: "int" })
-    id_programs!: number;
+    
+    @ManyToOne(()=>Programs)
+    @JoinColumn({ name: "id_programs" })
+    Programs!: Programs;
 
     @Column({ type: "int" })
     status_promotions!: number;

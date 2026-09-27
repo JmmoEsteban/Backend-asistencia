@@ -3,7 +3,7 @@ import type { Subjects as SubjectsDomain } from "../../domain/Subjects";
 import { Subjects as SubjectsEntity } from "../entities/Subjects";
 import type { SubjectsPort } from "../../domain/SubjectsPort";
 import { AppDataSource } from "../../../../shared/config/data-base";
-import { string } from "joi";
+// import { string } from "joi";
 //import { object } from "joi";
 
 export class SubjectsAdapter implements SubjectsPort{

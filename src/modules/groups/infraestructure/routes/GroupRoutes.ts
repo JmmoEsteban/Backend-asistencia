@@ -25,6 +25,30 @@ router.get("/grupos", async (req, res) => {
     }
 });
 
+router.get("/grupos/programas/id/:id", async (req, res) => {
+    try {
+        await groupController.getByIdProgram(req, res);
+    } catch (error) {
+        res.status(500).json({ message: "Error en la obtencion de los grupos del programa" });
+    }
+});
+
+router.get("/grupos/promociones/id/:id", async (req, res) => {
+    try {
+        await groupController.getByIdPromotion(req, res);
+    } catch (error) {
+        res.status(500).json({ message: "Error en la obtencion de los grupos de la promocion" });
+    }
+});
+
+router.get("/grupos/materias/id/:id", async (req, res) => {
+    try {
+        await groupController.getByIdSubject(req, res);
+    } catch (error) {
+        res.status(500).json({ message: "Error en la obtencion de los grupos de la materia" });
+    }
+});
+
 router.get("/grupos/id/:id", async (req, res) => {
     try {
         await groupController.getByIdGroup(req, res);

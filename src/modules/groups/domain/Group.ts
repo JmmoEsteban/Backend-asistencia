@@ -1,5 +1,7 @@
 import type { Program } from "../../programs/infraestructure/entities/Program";
+import type { Programs } from "../../programs/infraestructure/entities/Programs";
 import type { Promotion } from "../../promotions/infraestructure/entities/Promotion";
+import type { Subjects } from "../../subjects/infraestructure/entities/Subjects";
 
 export interface Group {
     id_group: number;
@@ -8,5 +10,9 @@ export interface Group {
     id_promotions: number;
     id_programs: number;
     status_group: number;
-    promotion?: Promotion;
+    subjects: Subjects;
+    promotion: Promotion;
+    programs: Programs;
+
+
 }

@@ -4,6 +4,7 @@ import { Session as SessionEntity } from "../entities/Session";
 import type { SessionPort } from "../../domain/SessionPort";
 import { AppDataSource } from "../../../../shared/config/data-base";
 import type { date } from "joi";
+import { Group } from "../../../groups/infraestructure/entities/Group";
 //import { object } from "joi";
 
 export class SessionAdapter implements SessionPort{
@@ -19,8 +20,9 @@ export class SessionAdapter implements SessionPort{
             id: session.id_session,
             date: session.date_session,
             day: session.day_session,
-            id_group: session.id_group,
-            status: session.status_session
+            id_group: session.Group.id_group,
+            status: session.status_session,
+            group: session.Group
         }
     }
 
@@ -28,7 +30,7 @@ export class SessionAdapter implements SessionPort{
         const sessionEntity = new SessionEntity();
         sessionEntity.date_session = session.date;
         sessionEntity.day_session = session.day;
-        sessionEntity.id_group = session.id_group;
+        sessionEntity.Group.id_group = session.id_group;
         sessionEntity.status_session = session.status;
         return sessionEntity;
     }
@@ -51,7 +53,7 @@ export class SessionAdapter implements SessionPort{
             Object.assign(existSession, {
                 date_session: session.date ?? existSession.date_session,
                 day_session: session.day ?? existSession.day_session,
-                id_group: session.id_group ?? existSession.id_group,
+                id_group: session.id_group ?? existSession.Group.id_group,
                 status_session: session.status ?? existSession.status_session
             });
 
@@ -79,7 +81,7 @@ export class SessionAdapter implements SessionPort{
     }
     async getSessionById(id: number): Promise<SessionDomain | null> {
         try {
-            const session = await this.sessionRepository.findOne({where: {id_session: id}});
+            const session = await this.sessionRepository.findOne({where: {id_session: id}, relations: {Group:true}});
             return session ? this.toDomain(session) : null;
         } catch (error) {
             console.error("Error obteniendo la sesion por ID");
@@ -88,7 +90,7 @@ export class SessionAdapter implements SessionPort{
     }
     async getSessionByDate(date: Date): Promise<SessionDomain[] | null> {
         try {
-            const session = await this.sessionRepository.find({where: {date_session: date}});
+            const session = await this.sessionRepository.find({where: {date_session: date}, relations: {Group: true}});
             return session ? session.map(this.toDomain) : null;
         } catch (error) {
             console.error("Error obteniendo la sesion por fecha");
@@ -97,7 +99,7 @@ export class SessionAdapter implements SessionPort{
     }
     async getSessionByGroup(Groupid: number): Promise<SessionDomain[] | null> {
         try {
-            const session = await this.sessionRepository.find({where: {id_group: Groupid}});
+            const session = await this.sessionRepository.find({where: { Group: {id_group:Groupid}}, relations: {Group:true}});
             return session ? session.map(this.toDomain) : null;
         } catch (error) {
             console.error("Error obteniendo la sesion por grupo");
@@ -106,7 +108,7 @@ export class SessionAdapter implements SessionPort{
     }
     async getAllSession(): Promise<SessionDomain[]> {
         try {
-            const session = await this.sessionRepository.find({where: {status_session: 1}});
+            const session = await this.sessionRepository.find({where: {status_session: 1}, relations: {Group:true}});
             return session.map(this.toDomain);
         } catch (error) {
             console.error("Error obteniendo todas las sesiones", error);

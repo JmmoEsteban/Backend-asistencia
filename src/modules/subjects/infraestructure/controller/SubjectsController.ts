@@ -5,7 +5,7 @@ import type { Subjects } from "../../domain/Subjects";
 import { json, type Request, type Response } from "express";
 import { loadUpdateUserData } from "../../../../shared/util/user-update-validation";
 import { loadUpdateSubjectsData } from "../../../../shared/util/subjects-update-validation";
-import { string } from "joi";
+// import { string } from "joi";
 
 export class SubjectsController{
     private app: SubjectsApplication;
