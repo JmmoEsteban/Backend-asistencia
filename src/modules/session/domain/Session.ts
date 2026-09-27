@@ -2,6 +2,6 @@ export interface Session {
     id: number;
     date: Date;
     day: number,
-    group_id: number;
+    id_group: number;
     status: number;
 }

@@ -8,7 +8,7 @@ export class PromotionApplication {
         this.port = port;
     }
 
-    async createPromotion(promotion: Omit<Promotion, "promotion_id">): Promise<number> {
+    async createPromotion(promotion: Omit<Promotion, "id_promotion">): Promise<number> {
         return await this.port.createPromotion(promotion);
     }
 

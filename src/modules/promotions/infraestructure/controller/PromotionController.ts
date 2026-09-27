@@ -13,10 +13,11 @@ export class PromotionController {
 
     async createPromotion(req: Request, res: Response): Promise<Response> {
         try {
-            const { promotion_name, id_programs } = loadPromotionData(req.body);
-            const promotion: Omit<Promotion, "promotion_id"> = {
-                promotion_name,
-                id_programs
+            const { name_promotion, id_programs, status_promotions } = loadPromotionData(req.body);
+            const promotion: Omit<Promotion, "id_promotion"> = {
+                name_promotion,
+                id_programs,
+                status_promotions
             };
             const promotionId = await this.app.createPromotion(promotion);
             return res.status(201).json({ message: "Promocion creada con exito", promotionId });

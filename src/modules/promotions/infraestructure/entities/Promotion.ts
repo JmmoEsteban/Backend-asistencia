@@ -1,13 +1,21 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Program } from "../../../programs/infraestructure/entities/Program";
 
 @Entity("promotions")
 export class Promotion {
     @PrimaryGeneratedColumn()
-    promotion_id!: number;
+    id_promotion!: number;
 
     @Column({ type: "varchar", length: 150 })
-    promotion_name!: string;
+    name_promotion!: string;
 
     @Column({ type: "int" })
     id_programs!: number;
+
+    @Column({ type: "int" })
+    status_promotions!: number;
+
+    @ManyToOne(() => Program)
+    @JoinColumn({ name: "id_programs" })
+    program!: Program;
 }

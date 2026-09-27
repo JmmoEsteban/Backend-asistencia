@@ -1,10 +1,11 @@
 import Joi from "joi";
 
 export type ReturnGroupData = Partial<{
-    group_acces_code: string;
+    access_code_group: string;
     id_subjects: number;
-    id_promotion: number;
+    id_promotions: number;
     id_programs: number;
+    status_group: number;
 }>;
 
 type ValidationUpdateGroupData = {
@@ -14,7 +15,7 @@ type ValidationUpdateGroupData = {
 
 function validateGroupData(data: any): ValidationUpdateGroupData {
     const groupSchema = Joi.object({
-        group_acces_code: Joi.string().max(15).messages({
+        access_code_group: Joi.string().max(15).messages({
             'string.empty': 'El código de acceso no puede estar vacío',
             'string.max': 'El código de acceso no puede tener más de 15 caracteres',
         }),
@@ -23,7 +24,7 @@ function validateGroupData(data: any): ValidationUpdateGroupData {
             'number.integer': 'El ID de la materia debe ser entero',
             'number.positive': 'El ID de la materia debe ser positivo',
         }),
-        id_promotion: Joi.number().integer().positive().messages({
+        id_promotions: Joi.number().integer().positive().messages({
             'number.base': 'El ID de la promoción debe ser un número',
             'number.integer': 'El ID de la promoción debe ser entero',
             'number.positive': 'El ID de la promoción debe ser positivo',
@@ -33,9 +34,14 @@ function validateGroupData(data: any): ValidationUpdateGroupData {
             'number.integer': 'El ID del programa debe ser entero',
             'number.positive': 'El ID del programa debe ser positivo',
         }),
+        status_group: Joi.number().integer().positive().messages({
+            'number.base': 'El estado del grupo debe ser un número',
+            'number.integer': 'El estado del grupo debe ser entero',
+            'number.positive': 'El estado del grupo debe ser positivo',
+        }),
     })
         .unknown(false)
-        .or("group_acces_code", "id_subjects", "id_promotion", "id_programs");
+        .or("access_code_group", "id_subjects", "id_promotions", "id_programs", "status_group");
 
     const { error, value } = groupSchema.validate(data, { abortEarly: false, stripUnknown: true, convert: true });
     return { error, value };

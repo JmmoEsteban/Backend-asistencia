@@ -13,24 +13,26 @@ export class PromotionAdapter implements PromotionPort {
 
     private toDomain(promotion: PromotionEntity): PromotionDomain {
         return {
-            promotion_id: promotion.promotion_id,
-            promotion_name: promotion.promotion_name,
+            id_promotion: promotion.id_promotion,
+            name_promotion: promotion.name_promotion,
             id_programs: promotion.id_programs,
+            status_promotions: promotion.status_promotions,
         };
     }
 
-    private toEntity(promotion: Omit<PromotionDomain, "promotion_id">): PromotionEntity {
+    private toEntity(promotion: Omit<PromotionDomain, "id_promotion">): PromotionEntity {
         const promotionEntity = new PromotionEntity();
-        promotionEntity.promotion_name = promotion.promotion_name;
+        promotionEntity.name_promotion = promotion.name_promotion;
         promotionEntity.id_programs = promotion.id_programs;
+        promotionEntity.status_promotions = promotion.status_promotions;
         return promotionEntity;
     }
 
-    async createPromotion(promotion: Omit<PromotionDomain, "promotion_id">): Promise<number> {
+    async createPromotion(promotion: Omit<PromotionDomain, "id_promotion">): Promise<number> {
         try {
             const newPromotion = this.toEntity(promotion);
             const savedPromotion = await this.promotionRepository.save(newPromotion);
-            return savedPromotion.promotion_id;
+            return savedPromotion.id_promotion;
         } catch (error) {
             console.error("Error creando promocion", error);
             throw new Error("Error al crear promocion");
@@ -39,12 +41,13 @@ export class PromotionAdapter implements PromotionPort {
 
     async updatePromotion(id: number, promotion: Partial<PromotionDomain>): Promise<boolean> {
         try {
-            const existPromotion = await this.promotionRepository.findOne({ where: { promotion_id: id } });
+            const existPromotion = await this.promotionRepository.findOne({ where: { id_promotion: id } });
             if (!existPromotion) return false;
 
             Object.assign(existPromotion, {
-                promotion_name: promotion.promotion_name ?? existPromotion.promotion_name,
+                name_promotion: promotion.name_promotion ?? existPromotion.name_promotion,
                 id_programs: promotion.id_programs ?? existPromotion.id_programs,
+                status_promotions: promotion.status_promotions ?? existPromotion.status_promotions,
             });
 
             await this.promotionRepository.save(existPromotion);
@@ -57,7 +60,7 @@ export class PromotionAdapter implements PromotionPort {
 
     async deletePromotion(id: number): Promise<boolean> {
         try {
-            const existPromotion = await this.promotionRepository.findOne({ where: { promotion_id: id } });
+            const existPromotion = await this.promotionRepository.findOne({ where: { id_promotion: id } });
             if (!existPromotion) return false;
 
             await this.promotionRepository.remove(existPromotion);
@@ -70,7 +73,7 @@ export class PromotionAdapter implements PromotionPort {
 
     async getPromotionById(id: number): Promise<PromotionDomain | null> {
         try {
-            const promotion = await this.promotionRepository.findOne({ where: { promotion_id: id } });
+            const promotion = await this.promotionRepository.findOne({ where: { id_promotion: id } });
             return promotion ? this.toDomain(promotion) : null;
         } catch (error) {
             console.error("Error obteniendo promocion por ID", error);

@@ -1,8 +1,9 @@
 import Joi from "joi";
 
 export type ReturnPromotionData = {
-    promotion_name: string;
+    name_promotion: string;
     id_programs: number;
+    status_promotions: number;
 };
 
 type ValidationPromotionData = {
@@ -12,7 +13,7 @@ type ValidationPromotionData = {
 
 function validatePromotionData(data: any): ValidationPromotionData {
     const promotionSchema = Joi.object({
-        promotion_name: Joi.string().max(150).required().messages({
+        name_promotion: Joi.string().max(150).required().messages({
             'string.empty': 'El nombre de la promoción es requerido',
             'string.max': 'El nombre de la promoción no puede tener más de 150 caracteres',
         }),
@@ -21,6 +22,12 @@ function validatePromotionData(data: any): ValidationPromotionData {
             'number.base': 'El ID del programa debe ser un número',
             'number.integer': 'El ID del programa debe ser entero',
             'number.positive': 'El ID del programa debe ser positivo',
+        }),
+        status_promotions: Joi.number().required().integer().positive().messages({
+            'number.empty': 'El estado de la promoción es requerido',
+            'number.base': 'El estado de la promoción debe ser un número',
+            'number.integer': 'El estado de la promoción debe ser entero',
+            'number.positive': 'El estado de la promoción debe ser positivo',
         }),
     }).unknown(false);
 

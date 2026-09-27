@@ -19,7 +19,7 @@ export class SessionAdapter implements SessionPort{
             id: session.id_session,
             date: session.date_session,
             day: session.day_session,
-            group_id: session.id_group,
+            id_group: session.id_group,
             status: session.status_session
         }
     }
@@ -28,7 +28,7 @@ export class SessionAdapter implements SessionPort{
         const sessionEntity = new SessionEntity();
         sessionEntity.date_session = session.date;
         sessionEntity.day_session = session.day;
-        sessionEntity.id_group = session.group_id;
+        sessionEntity.id_group = session.id_group;
         sessionEntity.status_session = session.status;
         return sessionEntity;
     }
@@ -51,7 +51,7 @@ export class SessionAdapter implements SessionPort{
             Object.assign(existSession, {
                 date_session: session.date ?? existSession.date_session,
                 day_session: session.day ?? existSession.day_session,
-                id_group: session.group_id ?? existSession.id_group,
+                id_group: session.id_group ?? existSession.id_group,
                 status_session: session.status ?? existSession.status_session
             });
 

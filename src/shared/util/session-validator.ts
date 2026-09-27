@@ -3,7 +3,7 @@ import Joi from "joi";
 export type ReturnSessionData={
     date : Date;
     day : number;
-    group_id: number;
+    id_group: number;
     status: number;
 }
 
@@ -17,7 +17,7 @@ function validateSessionData(data: any): ValidationSessionData{
         date : Joi.date().required().messages({'date.empty' : 'la fecha es requerida'}),
         day : Joi.number().required().integer().messages({
             'number.empty' : 'El dia es requerido', 'number.integer' : 'El dia del usuario debe ser entero'}),
-        group_id : Joi.number().required().integer().messages({
+        id_group : Joi.number().required().integer().messages({
             'number.empty' : 'El ID del grupo es requerido', 'number.integer' : 'El ID del grupo debe ser entero'}),
         status : Joi.number().required().integer().valid(0, 1).messages({
             'number.empty' : 'El status es requerido', 'number.integer' : 'El status debe ser entero', 'any.only' : 'El status solo puede ser 0 o 1'}),

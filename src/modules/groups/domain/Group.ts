@@ -1,7 +1,8 @@
 export interface Group {
-    group_id: number;
-    group_acces_code: string;
+    id_group: number;
+    access_code_group: string;
     id_subjects: number;
-    id_promotion: number;
+    id_promotions: number;
     id_programs: number;
+    status_group: number;
 }

@@ -17,8 +17,8 @@ export class SessionController{
 
     async createSession(req: Request, res: Response){
         try {
-            const {date, day, group_id, status} = loadSessionData(req.body);
-            const session: Omit<Session, "id"> = {date, day, group_id, status};
+            const {date, day, id_group, status} = loadSessionData(req.body);
+            const session: Omit<Session, "id"> = {date, day, id_group, status};
             const sessionId = await this.app.createSession(session);
             return res
                 .status(201)

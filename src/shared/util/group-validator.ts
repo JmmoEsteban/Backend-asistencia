@@ -1,10 +1,11 @@
 import Joi from "joi";
 
 export type ReturnGroupData = {
-    group_acces_code: string;
+    access_code_group: string;
     id_subjects: number;
-    id_promotion: number;
+    id_promotions: number;
     id_programs: number;
+    status_group: number;
 };
 
 type ValidationGroupData = {
@@ -14,7 +15,7 @@ type ValidationGroupData = {
 
 function validateGroupData(data: any): ValidationGroupData {
     const groupSchema = Joi.object({
-        group_acces_code: Joi.string().max(15).required().messages({
+        access_code_group: Joi.string().max(15).required().messages({
             'string.empty': 'El código de acceso es requerido',
             'string.max': 'El código de acceso no puede tener más de 15 caracteres',
         }),
@@ -24,7 +25,7 @@ function validateGroupData(data: any): ValidationGroupData {
             'number.integer': 'El ID de la materia debe ser entero',
             'number.positive': 'El ID de la materia debe ser positivo',
         }),
-        id_promotion: Joi.number().required().integer().positive().messages({
+        id_promotions: Joi.number().required().integer().positive().messages({
             'number.empty': 'El ID de la promoción es requerido',
             'number.base': 'El ID de la promoción debe ser un número',
             'number.integer': 'El ID de la promoción debe ser entero',
@@ -35,6 +36,12 @@ function validateGroupData(data: any): ValidationGroupData {
             'number.base': 'El ID del programa debe ser un número',
             'number.integer': 'El ID del programa debe ser entero',
             'number.positive': 'El ID del programa debe ser positivo',
+        }),
+        status_group: Joi.number().required().integer().positive().messages({
+            'number.empty': 'El estado del grupo es requerido',
+            'number.base': 'El estado del grupo debe ser un número',
+            'number.integer': 'El estado del grupo debe ser entero',
+            'number.positive': 'El estado del grupo debe ser positivo',
         }),
     }).unknown(false);
 

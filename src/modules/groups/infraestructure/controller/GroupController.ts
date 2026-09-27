@@ -13,12 +13,13 @@ export class GroupController {
 
     async createGroup(req: Request, res: Response): Promise<Response> {
         try {
-            const { group_acces_code, id_subjects, id_promotion, id_programs } = loadGroupData(req.body);
-            const group: Omit<Group, "group_id"> = {
-                group_acces_code,
+            const { access_code_group, id_subjects, id_promotions, id_programs, status_group } = loadGroupData(req.body);
+            const group: Omit<Group, "id_group"> = {
+                access_code_group,
                 id_subjects,
-                id_promotion,
-                id_programs
+                id_promotions,
+                id_programs,
+                status_group
             };
             const groupId = await this.app.createGroup(group);
             return res.status(201).json({ message: "Grupo creado con exito", groupId });

@@ -8,7 +8,7 @@ export class GroupApplication {
         this.port = port;
     }
 
-    async createGroup(group: Omit<Group, "group_id">): Promise<number>{
+    async createGroup(group: Omit<Group, "id_group">): Promise<number>{
         return await this.port.createGroup(group);
     }
 
