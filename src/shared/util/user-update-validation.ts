@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import type { Programs } from '../../modules/programs/infraestructure/entities/Programs';
 
 export type ReturnUpdateUserData = Partial<{ 
     user_first_name: string;

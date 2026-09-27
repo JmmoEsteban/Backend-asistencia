@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import type { Programs } from '../../modules/programs/infraestructure/entities/Programs';
 
 export type ReturnUserData = {
     user_first_name: string,
@@ -12,11 +13,12 @@ export type ReturnUserData = {
     user_office_location: string,
     user_mobile_phone: string,
     user_business_phones: string,
-    user_permissions: JSON, 
+    user_permissions: JSON,
     user_role_id: number,
     user_program_id: number,
     user_status_id: number,
-    user_created_at: Date
+    user_created_at: Date,
+    Programs: Programs
 }
 
 type validationUserData = {
@@ -26,7 +28,7 @@ type validationUserData = {
 
 function validateUserData(data: any): validationUserData{
     const userSchema = Joi.object({
-        nombre: Joi.string()
+        user_first_name: Joi.string()
         .trim()
         .min(3)
         .pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+( [A-Za-zÁÉÍÓÚáéíóúÑñ]+)?$/)
@@ -37,38 +39,38 @@ function validateUserData(data: any): validationUserData{
             'string.min': 'El nombre debe tener al menos 3 caracteres', 
             'string.pattern.base': 'El nombre solo puede contener letras y un espacio'
         }),
-        email: Joi.string()
+        user_email: Joi.string()
         .email({tlds: {allow: false}})
         .required()
         .messages({
             'string.email': 'Correo electronico no valido', 
             'string. empty': 'El correo es requerido', 
         }),
-        contraseña: Joi.string()
+        user_password: Joi.string()
         .min(6)
-        .pattern(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/)
+        .pattern(/^(?=.*[A-Za-z])(?=.*\d).+$/)
         .required()
         .messages ({ 
             'string.min': 'La contrasena debe tener al menos 6 caracteres', 'string.pattern.base': 'La contrasena debe tener letras y números', 'string.empty': 'La contraseña es requerida', 
         }),
-        telefono: Joi.string()
+        user_mobile_phone: Joi.string()
         .required()
         .messages({
             'string.empty': 'El teléfono es requerido',
         }),
 
-        rol: Joi.string()
+        user_role_id: Joi.number()
         .required()
         .messages({
             'string.empty': 'El rol es requerido',
         }),
-        status: Joi.number()
+        user_status_id: Joi.number()
         .valid(0, 1)
         .required()
         .messages ({ 
             'number.base': 'El estado debe ser numerico', 'any.only': 'El estado debe ser 0 o 1', 'any.required': 'El estado es obligatorio',  
         }),
-    }).unknown(false);
+    }).unknown(true);
     
     const {error, value} = userSchema.validate(data, {abortEarly:false});
     return {error, value};

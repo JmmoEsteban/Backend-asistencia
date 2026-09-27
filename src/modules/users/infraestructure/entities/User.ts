@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Programs } from '../../../programs/infraestructure/entities/Programs';
 
 @Entity('users')
 export class User{
@@ -15,59 +16,42 @@ export class User{
     email!:string;
 
     @Column({type: "character varying", nullable:true, length: 255})
-        password!:string;
+    password!:string;
 
     @Column({type: "character varying", nullable:true, length: 255})
-        microsoft_id!:string;
+    microsoft_id!:string;
     
     @Column({type: "character varying", nullable:false, length: 20, default: 'local'})
-        auth_provider!:string;
+    auth_provider!:string;
     
     @Column({type: "character varying", nullable:true, length: 150})
-        job_title!:string;
+    job_title!:string;
 
     @Column({type: "character varying", nullable:true, length: 150})
-        department!:string;
+    department!:string;
 
     @Column({type: "character varying", nullable:true, length: 150})
-        office_location!:string;
+    office_location!:string;
 
     @Column({type: "character varying", nullable:true, length: 50})
-        mobile_phone!:string;
+    mobile_phone!:string;
 
     @Column({type: "character varying", nullable:true})
-        business_phones!:string;
+    business_phones!:string;
 
     @Column({type: "jsonb", nullable:true})
-        permissions!:JSON;
+    permissions!:JSON;
     
     @Column({type: "integer", nullable:false})
-        role_id!:number;
+    role_id!:number;
+
+    @ManyToOne(()=> Programs)
+    @JoinColumn({name: "program_id"})
+    Program:Programs;
 
     @Column({type: "integer", nullable:false})
-        program_id!:number;
-
-    @Column({type: "integer", nullable:false})
-        status_id!:number;
+    status_id!:number;
 
     @Column({type: "timestamp", nullable:false, default: () => "CURRENT_TIMESTAMP"})
-        created_at!:Date;
+    created_at!:Date;
 }
-
-// id: number;
-//     first_name: string;
-//     last_name: string;
-//     email: string;
-//     password: string;
-//     microsoft_id: string;
-//     auth_provider: string;
-//     job_title: string;
-//     department: string;
-//     office_location: string;
-//     mobile_phone: string;
-//     business_phones: string;
-//     permissions: JSON; 
-//     role_id: number;
-//     program_id: number;
-//     status_id: number;
-//     status: number;

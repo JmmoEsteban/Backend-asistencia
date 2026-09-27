@@ -3,6 +3,7 @@ import type { User as UserDomain} from "../../domain/User";
 import type { UserPort } from "../../domain/UserPort";
 import {User as UserEntity} from "../entities/User"
 import { AppDataSource } from "../../../../shared/config/data-base";
+import { Programs } from "../../../programs/infraestructure/entities/Programs";
 
 export class UserAdapter implements UserPort{
 
@@ -28,9 +29,11 @@ export class UserAdapter implements UserPort{
             user_business_phones: user.business_phones,
             user_permissions: user.permissions,
             user_role_id: user.role_id,
-            user_program_id: user.program_id,
+            user_program_id: user.Program.id,
             user_status_id: user.status_id,
-            user_created_at: user.created_at   
+            user_created_at: user.created_at,
+            Programs: user.Program
+
         }
     }
 
@@ -49,9 +52,10 @@ export class UserAdapter implements UserPort{
         userEntity.business_phones = user.user_business_phones,
         userEntity.permissions = user.user_permissions,
         userEntity.role_id = user.user_role_id,
-        userEntity.program_id = user.user_program_id,
+        userEntity.Program.id = user.user_program_id,
         userEntity.status_id = user.user_status_id,
-        userEntity.created_at = user.user_created_at  
+        userEntity.created_at = user.user_created_at,  
+        userEntity.Program = user.Programs
         return userEntity;
     }
 
@@ -84,9 +88,10 @@ export class UserAdapter implements UserPort{
                 business_phones_user: user.user_business_phones ?? existingUser.business_phones,
                 permissions_user: user.user_permissions ?? existingUser.permissions,
                 role_id_user: user.user_role_id ?? existingUser.role_id,
-                program_id_user: user.user_program_id ?? existingUser.program_id,
+                program_id_user: user.user_program_id ?? existingUser.Program,
                 status_id_user: user.user_status_id ?? existingUser.status_id,
-                created_at_user: user.user_created_at ?? existingUser.created_at 
+                created_at_user: user.user_created_at ?? existingUser,
+                Programs: user.Programs ?? existingUser 
             });
             await this.userRepository.save(existingUser);
             return true;
@@ -114,7 +119,7 @@ export class UserAdapter implements UserPort{
 
     async getUserById(id: number): Promise<UserDomain | null> {
         try {
-            const user = await this.userRepository.findOne({where: {id : id}});
+            const user = await this.userRepository.findOne({where: {id : id}, relations: {Program:true}});
             return user ? this.toDomain(user) : null;
         } catch (error) {
             console.log("Error obteniendo usuario por id", error)
@@ -123,7 +128,7 @@ export class UserAdapter implements UserPort{
     }
 
     async getUserByEmail(email: string): Promise<UserDomain | null> {
-        const user = await this.userRepository.findOne({where: {email : email}});
+        const user = await this.userRepository.findOne({where: {email : email},  relations: {Program:true}});
         if (!user) return null;
         
         return {
@@ -141,15 +146,16 @@ export class UserAdapter implements UserPort{
             user_business_phones: user.business_phones,
             user_permissions: user.permissions,
             user_role_id: user.role_id,
-            user_program_id: user.program_id,
+            user_program_id: user.Program.id,
             user_status_id: user.status_id,
-            user_created_at: user.created_at
+            user_created_at: user.created_at,
+            Programs: user.Program
         }
     }
 
     async getUserByRol(rol: number): Promise<UserDomain[] | null> {
         try {
-            const users = await this.userRepository.find({ where: { role_id: rol } });
+            const users = await this.userRepository.find({ where: { role_id: rol },  relations: {Program:true} });
             return users.map(this.toDomain);
         } catch (error) {
             console.log("Error obteniendo usuarios por rol", error);
@@ -157,9 +163,19 @@ export class UserAdapter implements UserPort{
         }
     }
 
+    async getUserByProgram(programId: number): Promise<UserDomain[] | null> {
+        try {
+            const users = await this.userRepository.find({ where: {Program: {id: programId} },  relations: {Program:true} });
+            return users.map(this.toDomain);
+        } catch (error) {
+            console.log("Error obteniendo usuario por id", error)
+            throw new Error("Error obteniendo usuario ")
+        }
+    }
+
     async getAllUsers(): Promise<UserDomain[]> {
         try {
-            const users = await this.userRepository.find({where : {status_id:1}});
+            const users = await this.userRepository.find({where : {status_id:1},  relations: {Program:true}});
             return users.map(this.toDomain);
         } catch (error) {
             console.log("Error obteniendo usuarios", error)

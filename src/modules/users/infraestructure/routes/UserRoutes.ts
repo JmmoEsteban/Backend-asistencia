@@ -56,6 +56,14 @@ router.get("/users/rol/:rol", authenticateToken, async (req, res)=>{
     }
 })
 
+router.get("/users/program/:program", authenticateToken, async (req, res)=>{
+    try {
+        await userController.getUserByProgram(req, res);
+    } catch (error) {
+        res.status(500).json({message: "Error en la consulta de datos", error});
+    }
+})
+
 router.post("/deleteUser/id/:id", authenticateToken, async (req, res)=>{
     try {
         await userController.deleteUser(req, res);

@@ -15,23 +15,23 @@ export class RegistrationAdapter implements RegistrationPort{
     private toDomain(registration: RegistrationEntity): RegistrationDomain{
         return{
             id: registration.id_registrations,
-            users: registration.id_users,
-            groups: registration.id_groups,
+            users: registration.User.id,
+            groups: registration.Groups.id_group,
             status: registration.status_registrations
         }
     }
 
     private toEntity(registration: Omit<RegistrationDomain, "id">):RegistrationEntity{
         const registrationEntity = new RegistrationEntity();
-        registrationEntity.id_groups = registration.groups;
-        registrationEntity.id_users = registration.users;
+        registrationEntity.Groups.id_group = registration.groups;
+        registrationEntity.User.id = registration.users;
         registrationEntity.status_registrations = registration.status;
         return registrationEntity;
     }
 
     async getRegistrationById(id: number): Promise<RegistrationDomain | null> {
         try {
-            const user = await this.registrationRepository.findOne({where: {id_registrations : id}});
+            const user = await this.registrationRepository.findOne({where: {id_registrations : id}, relations: {Groups:true, User:true} });
             return user ? this.toDomain(user) : null;
         } catch (error) {
             console.log("Error obteniendo inscripción por id", error)
@@ -41,7 +41,7 @@ export class RegistrationAdapter implements RegistrationPort{
 
     async getRegistrationsByGroups(groups: number): Promise<RegistrationDomain[] | null> {
         try {
-            const registration = await this.registrationRepository.find({ where: { id_groups: groups } });
+            const registration = await this.registrationRepository.find({ where: { Groups:{id_group: groups}}, relations: {Groups:true, User:true} });
             return registration.map(this.toDomain);
         } catch (error) {
             console.log("Error obteniendo inscripciones por grupos", error);
@@ -49,9 +49,9 @@ export class RegistrationAdapter implements RegistrationPort{
         }
     }
 
-    async getRegistrationsByUser(user: number): Promise<RegistrationDomain[] | null> {
+    async getRegistrationsByUser(id: number): Promise<RegistrationDomain[] | null> {
         try {
-            const registration = await this.registrationRepository.find({ where: { id_users: user } });
+            const registration = await this.registrationRepository.find({ where: {User:{id: id}}, relations: {Groups:true, User:true} });
             return registration.map(this.toDomain);
         } catch (error) {
             console.log("Error obteniendo inscripciones por usuario", error);
@@ -61,7 +61,7 @@ export class RegistrationAdapter implements RegistrationPort{
 
     async getAllRegistrations(): Promise<RegistrationDomain[]> {
         try {
-            const registration = await this.registrationRepository.find();
+            const registration = await this.registrationRepository.find({where : {status_registrations:1},  relations: {Groups:true, User:true}});
             return registration.map(this.toDomain);
         } catch (error) {
             console.log("Error obteniendo usuarios", error)

@@ -1,3 +1,5 @@
+import type { Programs } from "../../programs/infraestructure/entities/Programs";
+
 export interface User{
     user_id: number;
     user_first_name: string;
@@ -16,4 +18,5 @@ export interface User{
     user_program_id: number;
     user_status_id: number;
     user_created_at: Date;
+    Programs: Programs;
 }

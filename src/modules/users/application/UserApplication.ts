@@ -51,6 +51,10 @@ export class UserApplication{
         return await this.port.getUserByRol(rol);
     }
 
+    async getUserByProgram(programId: number) {
+        return await this.port.getUserByProgram(programId);
+    }
+
     async getAllUsers():Promise<User[]>{
         return await this.port.getAllUsers();
     }

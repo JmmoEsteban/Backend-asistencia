@@ -34,11 +34,11 @@ export class UserController {
             const {user_first_name, user_last_name, user_email, user_password, user_microsoft_id, 
                 user_auth_provider, user_job_title, user_department, user_office_location, 
                 user_mobile_phone, user_business_phones, user_permissions, user_role_id, user_program_id,
-                user_status_id, user_created_at} = loadUserData (req.body);
+                user_status_id, user_created_at, Programs} = loadUserData (req.body);
             const user: Omit<User, "user_id"> = {user_first_name, user_last_name, user_email, user_password, user_microsoft_id, 
                 user_auth_provider, user_job_title, user_department, user_office_location, 
                 user_mobile_phone, user_business_phones, user_permissions, user_role_id, user_program_id,
-                user_status_id,user_created_at};
+                user_status_id,user_created_at, Programs};
 
             const userId = await this.app.createUser(user);
             return res.status(201).json({message: "Usuario creado con éxito", userId});
@@ -82,7 +82,7 @@ export class UserController {
             const user = await this.app.getUserById(id);
             if (!user){
                 return res.status(404)
-                .json({error: "Rol no encontrado"})
+                .json({error: "Id no encontrado"})
             }
             return res.status(200).json(user);
         } catch (error) {
@@ -115,12 +115,11 @@ export class UserController {
     async getUserByRol(req: Request, res: Response): Promise<Response> { 
         try {    
             const { rol } = req.params;
-            if (typeof rol !== "number" || rol !== 0 || rol !== 1 || rol !== 2) {
-                return res.status(400).json({
-                error: "Rol incorrecto"
-                });
-            }
-            const user = await this.app.getUserByRol(rol);  
+            const roleId = Number(rol);
+            if (!Number.isInteger(roleId) || ![1, 2, 3].includes(roleId)) {
+                return res.status(400).json({ error: "Rol incorrecto" });
+                }
+            const user = await this.app.getUserByRol(roleId);  
             if (!user) { 
                 return res.status(404).json({ message: "Usuario no encontrado" });
             }  
@@ -131,6 +130,29 @@ export class UserController {
             }
             return res.status(500).json({ error: "Error interno del servidor", 
                 details: error instanceof Error ? error.message : "Error desconocido",});
+        }
+    }
+
+    async getUserByProgram(req:Request, res: Response): Promise<Response>{
+        try {
+            const { program } = req.params;
+            const id = Number(program);
+            if (Number.isNaN(id)) return res.status(400)
+                .json({error: "ID inválido"});
+
+            const user = await this.app.getUserByProgram(id);
+            if (user === undefined) {
+                return res.status(404)
+                .json({error: "Id no encontrado"})
+            }
+            return res.status(200).json(user);
+        } catch (error) {
+            if (error instanceof Error){
+                return res.status(500)
+                .json({ error: "Error interno del servidor", details: error.message});
+            }
+            return res.status(500)
+            .json({error: "Error interno del servidor"})
         }
     }
 
