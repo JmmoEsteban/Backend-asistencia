@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Group } from "../../../groups/infraestructure/entities/Group";
 
-@Entity()
+@Entity('session')
 export class Session {
     @PrimaryGeneratedColumn()
     id_session!: number;

@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "t
 import { Session } from "../../../session/infraestructure/entities/Session";
 import { User } from "../../../users/infraestructure/entities/User";
 
-@Entity()
+@Entity('attendance')
 export class Attendance {
     @PrimaryGeneratedColumn()
     id_attendance!: number;
