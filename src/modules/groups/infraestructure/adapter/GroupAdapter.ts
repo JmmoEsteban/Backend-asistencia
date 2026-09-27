@@ -21,6 +21,8 @@ export class GroupAdapter implements GroupPort {
             id_promotions: group.id_promotions,
             id_programs: group.id_programs,
             status_group: group.status_group,
+            program: group.program,
+            promotion: group.promotion,
         };
     }
 
@@ -82,7 +84,7 @@ export class GroupAdapter implements GroupPort {
 
     async getByIdGroup(id: number): Promise<GroupDomain | null> {
         try {
-            const group = await this.groupRepository.findOne({ where: { id_group: id } });
+            const group = await this.groupRepository.findOne({ where: { id_group: id }, relations: { program: true, promotion: true } });
             return group ? this.toDomain(group) : null;
         } catch (error) {
             console.error("Error obteniendo grupo por ID", error);
@@ -92,7 +94,7 @@ export class GroupAdapter implements GroupPort {
 
     async getAllGroups(): Promise<GroupDomain[]> {
         try {
-            const groups = await this.groupRepository.find();
+            const groups = await this.groupRepository.find({ relations: { program: true, promotion: true } });
             return groups.map((g) => this.toDomain(g));
         } catch (error) {
             console.error("Error obteniendo todos los grupos", error);
