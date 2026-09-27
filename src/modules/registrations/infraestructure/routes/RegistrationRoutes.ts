@@ -1,7 +1,6 @@
 import { Router } from "express";
-import { UserAdapter } from "../adapter/UserAdapter";
-import { UserApplication } from "../../application/UserApplication";
-import { UserController } from "../controller/UserController";
+import { UserAdapter } from "../adapter/RegistrationAdapter";
+import { UserController } from "../controller/RegistrationController";
 import { authenticateToken } from "../../../../web/authMiddleware";
 
 const router = Router();

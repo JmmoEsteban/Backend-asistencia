@@ -1,0 +1,56 @@
+// import bcrypt from "bcryptjs";
+// import type { Registration } from "../domain/Registration";
+// import type { RegistrationPort } from "../domain/RegistrationPort";
+// import { User } from "../../users/infraestructure/entities/User";
+
+// export class RegistrationApplication{
+//     private port: RegistrationPort;
+
+//     constructor(port: RegistrationPort){
+//         this.port = port;
+//     }
+
+//     async createRegistration(registration:Omit<Registration, "id">):Promise<number>{
+//         //antes de crear un usuario debo validar: el email no existe
+//         const existRole = await this.port.getRegistrationById(registration.status);
+//         if(existRole){
+//             throw new Error("Este email ya está registrado");
+//         }
+//         //Hashear la pss antes de guardar
+//         return this.port.createRegistration(registration);
+//     }
+
+//     async getRegistrationById(id:number):Promise<Registration | null>{
+//         return await this.port.getRegistrationById(id);
+//     }
+
+//     async getRegistrationsByUser(user:string):Promise<Registration[] | null>{
+//         return await this.port.getRegistrationsByUser(user);
+//     }
+
+//     async getRegistrationByGroups(rol: number): Promise<User[] | null> {
+//         return await this.port.getUserByRol(rol);
+//     }
+
+//     async getAllRegistrations():Promise<User[]>{
+//         return await this.port.getAllUsers();
+//     }
+
+//     async updateRegistration(id:number, user: Partial<User>): Promise<boolean>{
+//         const existingUser = await this.port.getUserById(id);
+//         if(!existingUser){
+//             throw new Error("Usuario no encontrado")
+//         }
+//         if (user.email){
+//             const emailTaken = await this.port.getUserByEmail(user.email);
+//             if (emailTaken && emailTaken.id !== id){
+//                 throw new Error("El email ya está en uso");
+//             }
+//         }
+//         return this.port.updateUser(id, user);
+//     }
+
+//     async deleteRegistration(id:number): Promise<boolean>{
+//         return await this.port.deleteUser(id);
+//     }
+// }

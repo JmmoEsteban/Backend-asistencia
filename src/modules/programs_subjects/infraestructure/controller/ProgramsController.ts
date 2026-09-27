@@ -15,8 +15,8 @@ export class ProgramsController{
 
     async createPrograms(req: Request, res: Response){
         try {
-            const { name } = loadProgramsData(req.body);
-            const programs: Omit<Programs, "id"> = {name};
+            const {name, id_subject} = loadProgramsData(req.body);
+            const programs: Omit<Programs, "id"> = {name, id_subject};
             const programsId = await this.app.createPrograms(programs);
             return res
                 .status(201)

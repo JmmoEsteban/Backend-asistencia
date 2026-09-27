@@ -14,14 +14,15 @@ export class ProgramsAdapter implements ProgramsPort{
 
     private toDomain(programs: ProgramsEntity): ProgramsDomain{
         return{
-            id: programs.id,
-            name: programs.name,
+            id: programs.id_programs,
+            name: programs.name_programs,
+            id_subject: programs.id_subject
         }
     }
 
     private toEntity(programs: Omit<ProgramsDomain, "id">): ProgramsEntity{
         const programsEntity = new ProgramsEntity();
-        programsEntity.name = programs.name;
+        programsEntity.name_programs = programs.name;
         return programsEntity;
     }
 
@@ -29,7 +30,7 @@ export class ProgramsAdapter implements ProgramsPort{
         try {
             const newPrograms = this.toEntity(programs);
             const savedPrograms = await this.programsRepository.save(newPrograms);
-            return savedPrograms.id;
+            return savedPrograms.id_programs;
         } catch (error) {
             console.error("Error creando programa", error);
             throw new Error("Error al crear programa");
@@ -37,11 +38,11 @@ export class ProgramsAdapter implements ProgramsPort{
     }
     async updatePrograms(id: number, programs: Partial<ProgramsDomain>): Promise<boolean> {
         try {
-            const existPrograms = await this.programsRepository.findOne({ where: { id: id }});
+            const existPrograms = await this.programsRepository.findOne({ where: { id_programs: id }});
             if (!existPrograms) return false;
 
             Object.assign(existPrograms, {
-                name_programs: programs.name ?? existPrograms.name,
+                name_programs: programs.name ?? existPrograms.name_programs,
             });
 
             await this.programsRepository.save(existPrograms);
@@ -54,7 +55,7 @@ export class ProgramsAdapter implements ProgramsPort{
     }
     async deletePrograms(id: number): Promise<boolean> {
         try {
-            const existPrograms = await this.programsRepository.findOne({where: {id: id}});
+            const existPrograms = await this.programsRepository.findOne({where: {id_programs: id}});
             if (!existPrograms) return false;
             Object.assign(existPrograms, {
                 status_programs: 0
@@ -68,7 +69,7 @@ export class ProgramsAdapter implements ProgramsPort{
     }
     async getProgramsById(id: number): Promise<ProgramsDomain | null> {
         try {
-            const programs = await this.programsRepository.findOne({where: {id: id}});
+            const programs = await this.programsRepository.findOne({where: {id_programs: id}});
             return programs ? this.toDomain(programs) : null;
         } catch (error) {
             console.error("Error obteniendo programa por ID");
@@ -77,11 +78,11 @@ export class ProgramsAdapter implements ProgramsPort{
     }
     async getProgramsByName(name: string): Promise<ProgramsDomain[] | null> {
         try {
-            const programs = await this.programsRepository.find({where: {name: name}});
+            const programs = await this.programsRepository.find({where: {name_programs: name}});
             return programs ? programs.map(this.toDomain) : null;
         } catch (error) {
-            console.error("error al obtener el programa por nombre", error);
-            throw new Error("Error al obtener programa por nombre");
+            console.error("Error obteniendo asistemcia por fecha");
+            throw new Error("Error al obtener asistencia por fecha");
         }
     }
     async getAllPrograms(): Promise<ProgramsDomain[]> {

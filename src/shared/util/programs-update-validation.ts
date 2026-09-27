@@ -2,7 +2,7 @@ import Joi from 'joi';
 
 export type ReturnProgramsData= Partial<{
     name : string;
-    status: number;
+    id_subject: number;
 }>;
 
 type ValidationUpdateProgramsData={
@@ -13,10 +13,7 @@ type ValidationUpdateProgramsData={
 function validateProgramsData(data: any): ValidationUpdateProgramsData{
     const programsSchema= Joi.object({
         name : Joi.string().messages({'name.base' : 'el nombre debe ser valido'}),
-        status : Joi.number().integer().valid(0, 1).messages({
-            'number.base': 'El status debe ser un número',
-            'number.integer': 'El status debe ser entero',
-            'any.only': 'El status solo puede ser 0 o 1',})
+        id_subject: Joi.number().required()
     }).unknown(false)
     .or("name", "status");
 

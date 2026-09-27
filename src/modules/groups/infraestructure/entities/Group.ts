@@ -13,19 +13,14 @@ export class Group{
     @Column({type:"int"})
     id_subjects!:number;
 
-    @Column({type:"int"})
+    @ManyToOne(() => Promotion)
+    @JoinColumn({ name: "id_promotions" })
     id_promotions!:number;
 
-    @Column({type:"int"})
+    @ManyToOne(() => Promotion)
+    @JoinColumn({ name: "id_programs" })
     id_programs!:number;
 
     @Column({type:"int"})
     status_group!:number;
-
-    @Column({ type: "int" })
-    program!: number;
-
-    @ManyToOne(() => Promotion)
-    @JoinColumn({ name: "id_promotions" })
-    promotion!: Promotion;
 }

@@ -1,7 +1,8 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Programs } from "../../../programs/infraestructure/entities/Programs";
 // import { Program } from "../../../programs/infraestructure/entities/Program";
 
-@Entity("promotions")
+@Entity('promotions')
 export class Promotion {
     @PrimaryGeneratedColumn()
     id_promotion!: number;
@@ -14,8 +15,4 @@ export class Promotion {
 
     @Column({ type: "int" })
     status_promotions!: number;
-
-    // @ManyToOne(() => Program)
-    @Column({ type: "int" })
-    program!: number;
 }

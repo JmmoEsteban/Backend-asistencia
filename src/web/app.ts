@@ -6,6 +6,7 @@ import SessionRoutes from "../modules/session/infraestructure/routes/SessionRout
 import GroupRoutes from "../modules/groups/infraestructure/routes/GroupRoutes";
 import PromotionRoutes from "../modules/promotions/infraestructure/routes/PromotionRoutes";
 import RolesRoutes from "../modules/roles/infraestructure/routes/RolesRoutes";
+import ProgramsRoutes from "../modules/programs/infraestructure/routes/ProgramsRoutes";
 
 class App{
     private app: express.Application;
@@ -28,6 +29,7 @@ class App{
         this.app.use("/api", GroupRoutes);
         this.app.use("/api", PromotionRoutes);
         this.app.use("/api", RolesRoutes);
+        this.app.use("/api", ProgramsRoutes);
     }
 
     getApp(){
