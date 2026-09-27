@@ -30,7 +30,7 @@ export class GroupAdapter implements GroupPort {
     }
 
     // Cambia el tipo de modelo de dominio a entidad para la base de datos
-    private toEntity(group: Omit<GroupDomain, "id_group">): GroupEntity {
+    private toEntity(group: Omit<GroupDomain, "id_group" | "subjects" | "programs" | "promotion">): GroupEntity {
         const groupEntity = new GroupEntity();
         groupEntity.access_code_group = group.access_code_group;
         groupEntity.Subjects.id_subject = group.id_subjects;
@@ -40,7 +40,7 @@ export class GroupAdapter implements GroupPort {
         return groupEntity;
     }
 
-    async createGroup(group: Omit<GroupDomain, "id_group">): Promise<number> {
+    async createGroup(group: Omit<GroupDomain, "id_group" | "subjects" | "programs" | "promotion">): Promise<number> {
         try {
             const newGroup = this.toEntity(group);
             const savedGroup = await this.groupRepository.save(newGroup);
@@ -92,6 +92,36 @@ export class GroupAdapter implements GroupPort {
         } catch (error) {
             console.error("Error obteniendo grupo por ID", error);
             throw new Error("Error al obtener grupo por ID");
+        }
+    }
+
+    async getByIdProgram(ProgramId: number): Promise<GroupDomain[]> {
+        try {
+            const group = await this.groupRepository.find({ where: { Programs: {id:ProgramId}}, relations: {Subjects: true, Promotion: true, Programs: true}});
+            return group.map(group=>this.toDomain(group));
+        } catch (error) {
+            console.error("Error obteniendo los grupos del programa", error);
+            throw new Error("Error al obtener los grupos del programa");
+        }
+    }
+
+    async getByIdPromotion(PromotionId: number): Promise<GroupDomain[]> {
+        try {
+            const group = await this.groupRepository.find({ where: { Promotion: {id_promotion:PromotionId}}, relations: {Subjects: true, Promotion: true, Programs: true}});
+            return group.map(group=>this.toDomain(group));
+        } catch (error) {
+            console.error("Error obteniendo grupos por promocion", error);
+            throw new Error("Error al obtener grupos por promocion");
+        }
+    }
+
+    async getByIdSubject(SubjectId: number): Promise<GroupDomain[]> {
+        try {
+            const group = await this.groupRepository.find({ where: { Subjects: {id_subject:SubjectId}}, relations: {Subjects: true, Promotion: true, Programs: true}});
+            return group.map(group=>this.toDomain(group));
+        } catch (error) {
+            console.error("Error obteniendo grupos por materias", error);
+            throw new Error("Error al obtener grupos por masterias");
         }
     }
 

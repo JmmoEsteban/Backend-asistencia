@@ -8,7 +8,7 @@ export class GroupApplication {
         this.port = port;
     }
 
-    async createGroup(group: Omit<Group, "id_group">): Promise<number>{
+    async createGroup(group: Omit<Group, "id_group" | "subjects" | "programs" | "promotion">): Promise<number>{
         return await this.port.createGroup(group);
     }
 
@@ -30,6 +30,18 @@ export class GroupApplication {
 
     async getByIdGroup(id: number): Promise<Group | null>{
         return await this.port.getByIdGroup(id);
+    }
+
+    async getByProgram(ProgramId: number): Promise<Group[]>{
+        return await this.port.getByIdProgram(ProgramId);
+    }
+
+    async getByPromotion(PromotionId: number): Promise<Group[]>{
+        return await this.port.getByIdPromotion(PromotionId);
+    }
+
+    async getBySubject(SubjectId: number): Promise<Group[]>{
+        return await this.port.getByIdSubject(SubjectId);
     }
 
     async getAllGroups(): Promise<Group[]>{
