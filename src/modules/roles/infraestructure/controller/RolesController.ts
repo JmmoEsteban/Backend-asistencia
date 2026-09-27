@@ -1,6 +1,6 @@
+import { loadRoleData } from "../../../../shared/util/role-validation";
 import type { RolesApplication } from "../../application/RolesApplication";
 import type { Request, Response } from "express";
-import { loadRoleData } from "../../../../shared/util/role-validation";
 
 export class RoleController {
 
@@ -34,7 +34,7 @@ export class RoleController {
 
     async getRoleByName(req: Request, res: Response): Promise<Response> { 
         try { // Validación del email usando Joi 
-            const { name } = loadRoleData(req.params);  
+            const {name} = loadRoleData(req.params);  
             const role = await this.app.getRoleByName(name);  
             if (!role) { 
                 return res.status(404).json  ({message: "Role no encontrado"});

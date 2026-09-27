@@ -2,13 +2,12 @@ import { Router } from "express";
 import { RoleAdapter } from "../adapter/RolesAdapter";
 import { RolesApplication } from "../../application/RolesApplication";
 import { RoleController } from "../controller/RolesController";
-import { authenticateToken } from "../../../../web/authMiddleware";
 
 const router = Router();
 //inicaializacion de las capas
-const userAdapter = new RoleAdapter();
-const userApp = new RolesApplication(userAdapter);
-const roleController = new RoleController(userApp);
+const roleAdapter = new RoleAdapter();
+const roleApp = new RolesApplication(roleAdapter);
+const roleController = new RoleController(roleApp);
 
 //definicion de las rutas
 router.get("/roles", async(req, res)=>{
@@ -27,7 +26,7 @@ router.get("/roles/id/:id", async (req, res)=>{
     }
 })
 
-router.get("/users/name/:name", async (req, res)=>{
+router.get("/roles/name/:name", async (req, res)=>{
     try {
         await roleController.getRoleByName(req, res);
     } catch (error) {

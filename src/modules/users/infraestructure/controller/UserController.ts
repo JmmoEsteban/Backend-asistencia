@@ -83,7 +83,7 @@ export class UserController {
             const user = await this.app.getUserById(id);
             if (!user){
                 return res.status(404)
-                .json({error: "Usuario no encontrado"})
+                .json({error: "Rol no encontrado"})
             }
             return res.status(200).json(user);
         } catch (error) {
@@ -101,7 +101,7 @@ export class UserController {
             const { email } = loadEmail(req.params);  
             const user = await this.app.getUserByEmail(email);  
             if (!user) { 
-                return res.status(404).json  ({message: "Usuario no encontrado"});
+                return res.status(404).json  ({message: "Rol no encontrado"});
             }  
             return res.status(200).json(user); } 
         catch (error) { 

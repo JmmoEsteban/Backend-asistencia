@@ -13,12 +13,10 @@ function validateRoleData(data: any): validationRoleData{
     const userSchema = Joi.object({
         id: Joi.number()
         .valid(1, 2, 3)
-        .required()
         .messages ({ 
-            'number.base': 'El estado debe ser numerico', 'any.only': 'El estado debe ser 1, 2, 3', 'any.required': 'El estado es obligatorio',  
+            'number.base': 'El estado debe ser numerico', 'any.only': 'El estado debe ser 1, 2, 3'
         }),
         name: Joi.string()
-        .trim(false)
         .required()
         .messages({
             'string.base': 'El nombre debe ser un texto', 
