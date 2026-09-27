@@ -3,9 +3,9 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 @Entity('subjects')
 export class Subjects {
     @PrimaryGeneratedColumn()
-    id_subject!: number;
+    id_subjects!: number;
     @Column({ type: "varchar"})
-    name_subject!: string;
+    name_subjects!: string;
     @Column({ type: "int"})
-    status_subject!: number;
+    status_subjects!: number;
 }

@@ -8,7 +8,7 @@ import { loadUpdateSubjectsData } from "../../../../shared/util/subjects-update-
 // import { string } from "joi";
 
 export class SubjectsController{
-    private app: SubjectsApplication;s
+    private app: SubjectsApplication;
 
     constructor(application: SubjectsApplication){
         this.app = application;
