@@ -80,7 +80,11 @@ export class ProgramsAdapter implements ProgramsPort{
             const programs = await this.programsRepository.find({where: {name: name}});
             return programs ? programs.map(this.toDomain) : null;
         } catch (error) {
+<<<<<<< Updated upstream
             console.error("error al obtener el programa por nombre", error);
+=======
+            console.error("Error obteniendo programas por nombre");
+>>>>>>> Stashed changes
             throw new Error("Error al obtener programa por nombre");
         }
     }
