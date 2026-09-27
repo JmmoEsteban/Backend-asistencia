@@ -1,11 +1,11 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity('subjects')
 export class Subjects {
     @PrimaryGeneratedColumn()
-    id_subjects!: number;
+    id_subject!: number;
     @Column({ type: "varchar"})
-    name_subjects!: string;
+    name_subject!: string;
     @Column({ type: "int"})
-    status_subjects!: number;
+    status_subject!: number;
 }

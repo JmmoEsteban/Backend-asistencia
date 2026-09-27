@@ -3,6 +3,7 @@ import { Group as GroupEntity } from "../entities/Group";
 import type { Group as GroupDomain } from "../../domain/Group";
 import type { GroupPort } from "../../domain/GroupPort";
 import { AppDataSource } from "../../../../shared/config/data-base";
+import { Promotion } from "../../../promotions/infraestructure/entities/Promotion";
 
 export class GroupAdapter implements GroupPort {
 
@@ -17,11 +18,14 @@ export class GroupAdapter implements GroupPort {
         return {
             id_group: group.id_group,
             access_code_group: group.access_code_group,
-            id_subjects: group.id_subjects,
-            id_promotions: group.id_promotions,
-            id_programs: group.id_programs,
+            id_subjects: group.Subjects.id_subject,
+            id_promotions: group.Promotion.id_promotion,
+            id_programs: group.Programs.id,
             status_group: group.status_group,
-            promotion: group.promotion,
+            subjects: group.Subjects,
+            promotion: group.Promotion,
+            programs: group.Programs,
+
         };
     }
 
@@ -29,9 +33,9 @@ export class GroupAdapter implements GroupPort {
     private toEntity(group: Omit<GroupDomain, "id_group">): GroupEntity {
         const groupEntity = new GroupEntity();
         groupEntity.access_code_group = group.access_code_group;
-        groupEntity.id_subjects = group.id_subjects;
-        groupEntity.id_promotions = group.id_promotions;
-        groupEntity.id_programs = group.id_programs;
+        groupEntity.Subjects.id_subject = group.id_subjects;
+        groupEntity.Promotion.id_promotion = group.id_promotions;
+        groupEntity.Programs.id = group.id_programs;
         groupEntity.status_group = group.status_group;
         return groupEntity;
     }
@@ -54,9 +58,9 @@ export class GroupAdapter implements GroupPort {
 
             Object.assign(groupExists, {
                 access_code_group: group.access_code_group ?? groupExists.access_code_group,
-                id_subjects: group.id_subjects ?? groupExists.id_subjects,
-                id_promotions: group.id_promotions ?? groupExists.id_promotions,
-                id_programs: group.id_programs ?? groupExists.id_programs,
+                id_subjects: group.id_subjects ?? groupExists.Subjects.id_subject,
+                id_promotions: group.id_promotions ?? groupExists.Promotion.id_promotion,
+                id_programs: group.id_programs ?? groupExists.Programs.id,
                 status_group: group.status_group ?? groupExists.status_group,
             });
 
@@ -83,7 +87,7 @@ export class GroupAdapter implements GroupPort {
 
     async getByIdGroup(id: number): Promise<GroupDomain | null> {
         try {
-            const group = await this.groupRepository.findOne({ where: { id_group: id }});
+            const group = await this.groupRepository.findOne({ where: { id_group: id }, relations: {Subjects: true, Promotion: true, Programs: true}});
             return group ? this.toDomain(group) : null;
         } catch (error) {
             console.error("Error obteniendo grupo por ID", error);
@@ -93,8 +97,8 @@ export class GroupAdapter implements GroupPort {
 
     async getAllGroups(): Promise<GroupDomain[]> {
         try {
-            const groups = await this.groupRepository.find();
-            return groups.map((g) => this.toDomain(g));
+            const groups = await this.groupRepository.find({where: {status_group : 1}, relations: {Subjects: true, Promotion: true, Programs: true}});
+            return groups.map(this.toDomain);
         } catch (error) {
             console.error("Error obteniendo todos los grupos", error);
             throw new Error("Error al obtener todos los grupos");
