@@ -1,6 +1,6 @@
 export interface Registration{
     id: number;
     users: number;
-    programs: number;
+    groups: number;
     status: number;
 }

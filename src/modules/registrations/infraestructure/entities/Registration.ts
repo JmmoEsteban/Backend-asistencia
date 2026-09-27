@@ -1,16 +1,16 @@
-import { Column, Entity, JoinColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('users')
-export class User{
+@Entity('registrations')
+export class Registration{
     @PrimaryGeneratedColumn()
-    id!:number;
+    id_registrations!:number;
 
-    @Column({type:"number"})
+    @Column({type:"integer"})
     id_users!:number;
 
-    @Column({type:"number"})
+    @Column({type:"integer"})
     id_groups!:number;
 
-    @Column({type:"number"})
+    @Column({type:"integer"})
     status_registrations!:number;
 }
