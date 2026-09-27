@@ -33,11 +33,7 @@ router.get("/programs/id/:id", async (req, res)=>{
     }
 })
 
-<<<<<<< Updated upstream
 router.get("/programs/name/:name", async (req, res)=>{
-=======
-router.get("/programas/name/:name", async (req, res)=>{
->>>>>>> Stashed changes
     try {
         await programsController.getProgramsByName(req, res);
     } catch (error) {
