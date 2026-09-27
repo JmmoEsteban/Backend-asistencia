@@ -13,29 +13,29 @@ export class UserApplication{
     async login(email:string, password:string):Promise<string>{
         const existUser = await this.port.getUserByEmail(email);
         if(!existUser){
-            throw new Error("Credenciales invalidas");
+            throw new Error("Credenciales de email invalidas");
         }
 
-        const passMatch = await bcrypt.compare(password, existUser.password);
+        const passMatch = await bcrypt.compare(password, existUser.user_password);
         if(!passMatch){
-            throw new Error ("Credenciales invalidas");
+            throw new Error ("Credenciales de pass invalidas");
         }
         const token = AuthApplication.generateToken({
-            id: existUser.id,
-            email: existUser.email
+            id: existUser.user_id,
+            email: existUser.user_email
         });
         return token;
     }   
 
-    async createUser(user:Omit<User, "id">):Promise<number>{
+    async createUser(user:Omit<User, "user_id">):Promise<number>{
         //antes de crear un usuario debo validar: el email no existe
-        const existUser = await this.port.getUserByEmail(user.email);
+        const existUser = await this.port.getUserByEmail(user.user_email);
         if(existUser){
             throw new Error("Este email ya está registrado");
         }
         //Hashear la pss antes de guardar
-        const hashedPassword = await bcrypt.hash(user.password, 12);
-        user.password = hashedPassword;
+        const hashedPassword = await bcrypt.hash(user.user_password, 12);
+        user.user_password = hashedPassword;
         return this.port.createUser(user);
     }
 
@@ -60,9 +60,9 @@ export class UserApplication{
         if(!existingUser){
             throw new Error("Usuario no encontrado")
         }
-        if (user.email){
-            const emailTaken = await this.port.getUserByEmail(user.email);
-            if (emailTaken && emailTaken.id !== id){
+        if (user.user_email){
+            const emailTaken = await this.port.getUserByEmail(user.user_email);
+            if (emailTaken && emailTaken.user_id !== id){
                 throw new Error("El email ya está en uso");
             }
         }

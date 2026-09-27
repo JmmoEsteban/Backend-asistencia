@@ -8,6 +8,7 @@ import { Group } from "../../modules/groups/infraestructure/entities/Group";
 import { Promotion } from "../../modules/promotions/infraestructure/entities/Promotion";
 import { Role } from "../../modules/roles/infraestructure/entities/Roles";
 import { Programs } from "../../modules/programs/infraestructure/entities/Programs";
+import { Registration } from "../../modules/registrations/infraestructure/entities/Registration";
 
 dotenv.config();
 export const AppDataSource = new DataSource ({
@@ -18,7 +19,7 @@ export const AppDataSource = new DataSource ({
     database: envs.DB_NAME,
     synchronize: false,
     logging:true,
-    entities: [User, Attendance, Session, Group, Promotion, Role, Programs],
+    entities: [User, Attendance, Session, Group, Promotion, Role, Programs, Registration],
 });
 
 //conectar a la DB
