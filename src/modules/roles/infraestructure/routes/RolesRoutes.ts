@@ -11,7 +11,7 @@ const userApp = new RolesApplication(userAdapter);
 const roleController = new RoleController(userApp);
 
 //definicion de las rutas
-router.get("/roles", authenticateToken, async(req, res)=>{
+router.get("/roles", async(req, res)=>{
     try {
         await roleController.getAllRoles(req, res);
     } catch (error) {
@@ -19,7 +19,7 @@ router.get("/roles", authenticateToken, async(req, res)=>{
     }
 })
 
-router.get("/roles/id/:id", authenticateToken, async (req, res)=>{
+router.get("/roles/id/:id", async (req, res)=>{
     try {
         await roleController.getRoleById(req, res);
     } catch (error) {
@@ -27,7 +27,7 @@ router.get("/roles/id/:id", authenticateToken, async (req, res)=>{
     }
 })
 
-router.get("/users/name/:name", authenticateToken, async (req, res)=>{
+router.get("/users/name/:name", async (req, res)=>{
     try {
         await roleController.getRoleByName(req, res);
     } catch (error) {
