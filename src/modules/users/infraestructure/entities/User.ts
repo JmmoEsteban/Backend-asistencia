@@ -1,5 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Programs } from '../../../programs/infraestructure/entities/Programs';
+import { Role } from '../../../roles/infraestructure/entities/Roles';
 
 @Entity('users')
 export class User{
@@ -42,8 +43,9 @@ export class User{
     @Column({type: "jsonb", nullable:true})
     permissions!:JSON;
     
-    @Column({type: "integer", nullable:false})
-    role_id!:number;
+    @ManyToOne(() => Role)
+    @JoinColumn({name: "role_id"})
+    Rol:Role;
 
     @ManyToOne(()=> Programs)
     @JoinColumn({name: "program_id"})

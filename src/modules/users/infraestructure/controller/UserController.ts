@@ -34,11 +34,11 @@ export class UserController {
             const {user_first_name, user_last_name, user_email, user_password, user_microsoft_id, 
                 user_auth_provider, user_job_title, user_department, user_office_location, 
                 user_mobile_phone, user_business_phones, user_permissions, user_role_id, user_program_id,
-                user_status_id, user_created_at, Programs} = loadUserData (req.body);
-            const user: Omit<User, "user_id"> = {user_first_name, user_last_name, user_email, user_password, user_microsoft_id, 
+                user_status_id, user_created_at} = loadUserData (req.body);
+            const user: Omit<User, "user_id" | "Program" | "Rol"> = {user_first_name, user_last_name, user_email, user_password, user_microsoft_id, 
                 user_auth_provider, user_job_title, user_department, user_office_location, 
                 user_mobile_phone, user_business_phones, user_permissions, user_role_id, user_program_id,
-                user_status_id,user_created_at, Programs};
+                user_status_id, user_created_at};
 
             const userId = await this.app.createUser(user);
             return res.status(201).json({message: "Usuario creado con éxito", userId});

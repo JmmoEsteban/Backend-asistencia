@@ -27,7 +27,7 @@ export class UserApplication{
         return token;
     }   
 
-    async createUser(user:Omit<User, "user_id">):Promise<number>{
+    async createUser(user:Omit<User, "user_id" | "Program" | "Rol">):Promise<number>{
         //antes de crear un usuario debo validar: el email no existe
         const existUser = await this.port.getUserByEmail(user.user_email);
         if(existUser){

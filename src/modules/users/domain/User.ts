@@ -1,4 +1,5 @@
 import type { Programs } from "../../programs/infraestructure/entities/Programs";
+import type { Role } from "../../roles/infraestructure/entities/Roles";
 
 export interface User{
     user_id: number;
@@ -18,5 +19,6 @@ export interface User{
     user_program_id: number;
     user_status_id: number;
     user_created_at: Date;
-    Programs: Programs;
+    Program: Programs;
+    Rol: Role
 }

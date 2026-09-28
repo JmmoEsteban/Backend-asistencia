@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import type { Programs } from '../../modules/programs/infraestructure/entities/Programs';
+import type { Role } from '../../modules/roles/infraestructure/entities/Roles';
 
 export type ReturnUserData = {
     user_first_name: string,
@@ -18,7 +19,8 @@ export type ReturnUserData = {
     user_program_id: number,
     user_status_id: number,
     user_created_at: Date,
-    Programs: Programs
+    Programs: Programs, 
+    Rol: Role
 }
 
 type validationUserData = {
