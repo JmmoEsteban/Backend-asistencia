@@ -80,10 +80,10 @@ export class SubjectsAdapter implements SubjectsPort{
             throw new Error("Error al obtener materia por ID");
         }
     }
-    async getSubjectsByName(name: string): Promise<SubjectsDomain[] | null> {
+    async getSubjectsByName(name: string): Promise<SubjectsDomain | null> {
         try {
-            const subjects = await this.subjectsRepository.find({where: {name_subjects: name}});
-            return subjects ? subjects.map(this.toDomain) : null;
+            const subjects = await this.subjectsRepository.findOne({where: {name_subjects: name}});
+            return subjects ? this.toDomain(subjects) : null;
         } catch (error) {
             console.error("Error obteniendo materias por nombre");
             throw new Error("Error al obtener materia por nombre");

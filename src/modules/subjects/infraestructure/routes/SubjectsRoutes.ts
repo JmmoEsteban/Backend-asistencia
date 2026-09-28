@@ -19,7 +19,7 @@ router.post("/materias", async (req,res)=>{
 
 router.get("/materias", async (req, res)=>{
     try {
-        await subjectsAdapter.getAllSubjects();
+        await subjectsController.getAllSubjects(req, res);
     } catch (error) {
         res.status(500).json({ message: "Error en la obtencion de las materias"});
     }

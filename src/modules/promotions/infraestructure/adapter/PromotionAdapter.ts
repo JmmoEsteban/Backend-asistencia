@@ -25,7 +25,7 @@ export class PromotionAdapter implements PromotionPort {
     private toEntity(promotion: Omit<PromotionDomain, "id_promotion">): PromotionEntity {
         const promotionEntity = new PromotionEntity();
         promotionEntity.name_promotion = promotion.name_promotion;
-        promotionEntity.Programs.id = promotion.id_programs;
+        promotionEntity.Programs = {id: promotion.id_programs} as Programs;
         promotionEntity.status_promotions = promotion.status_promotions;
         return promotionEntity;
     }

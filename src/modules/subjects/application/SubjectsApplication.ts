@@ -12,9 +12,9 @@ export class SubjectsApplication{
 
     async createSubjects(Subjects: Omit<Subjects, "id">): Promise<number>{
         const existSubjects = await this.port.getSubjectsByName(Subjects.name);
-        // if (existAttendance){
-        //     throw new Error("El usuario ya cuenta con registro de asistencia");
-        // }
+        if (existSubjects){
+            throw new Error("La materia ya existe");
+        }
         return this.port.createSubjects(Subjects);
     };
 
