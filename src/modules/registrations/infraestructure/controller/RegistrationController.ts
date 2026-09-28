@@ -37,11 +37,12 @@ export class RegistrationController {
 
     async getRegistrationByUser(req: Request, res: Response): Promise<Response> { 
         try {
-            const id = Number(req.params.id);
+            const {user} =req.params;
+            const id = Number(user);
             if (Number.isNaN(id)) return res.status(400)
                 .json({error: "ID inválido"});
 
-            const registration = await this.app.getRegistrationById(id);
+            const registration = await this.app.getRegistrationsByUser(id);
             if (!registration){
                 return res.status(404)
                 .json({error: "Inscripción no encontrado"})
@@ -59,7 +60,8 @@ export class RegistrationController {
 
     async getRegistrationsByGroups(req: Request, res: Response): Promise<Response> { 
         try {
-            const id = Number(req.params.id);
+            const {group} =req.params;
+            const id = Number(group);
             if (Number.isNaN(id)) return res.status(400)
                 .json({error: "ID inválido"});
 
@@ -80,7 +82,8 @@ export class RegistrationController {
     }
 
     async getAllRegistrations(req: Request, res: Response): Promise<Response> { 
-        try { const registrations = await this.app.getAllRegistrations(); 
+        try { 
+            const registrations = await this.app.getAllRegistrations(); 
             return res.status(200).json(registrations); 
         }catch (error) { 
             return res.status(500).json({ message: "Error al obtener usuarios", error });

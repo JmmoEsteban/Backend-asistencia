@@ -3,6 +3,7 @@ import type { Registration as RegistrationDomain} from "../../domain/Registratio
 import type { RegistrationPort } from "../../domain/RegistrationPort";
 import {Registration as RegistrationEntity} from "../entities/Registration"
 import { AppDataSource } from "../../../../shared/config/data-base";
+import { Group } from "../../../groups/infraestructure/entities/Group";
 
 export class RegistrationAdapter implements RegistrationPort{
 
@@ -15,23 +16,27 @@ export class RegistrationAdapter implements RegistrationPort{
     private toDomain(registration: RegistrationEntity): RegistrationDomain{
         return{
             id: registration.id_registrations,
-            users: registration.User.id,
-            groups: registration.Groups.id_group,
-            status: registration.status_registrations
+            id_users: registration.User.id,
+            id_groups: registration.Group.id_group,
+            status: registration.status_registrations,
+            Group: registration.Group,
+            User: registration.User
         }
     }
 
     private toEntity(registration: Omit<RegistrationDomain, "id">):RegistrationEntity{
         const registrationEntity = new RegistrationEntity();
-        registrationEntity.Groups.id_group = registration.groups;
-        registrationEntity.User.id = registration.users;
+        registrationEntity.Group.id_group = registration.Group.id_group;
+        registrationEntity.User.id = registration.User.id;
         registrationEntity.status_registrations = registration.status;
+        registrationEntity.Group = registration.Group;
+        registrationEntity.User = registration.User
         return registrationEntity;
     }
 
     async getRegistrationById(id: number): Promise<RegistrationDomain | null> {
         try {
-            const user = await this.registrationRepository.findOne({where: {id_registrations : id}, relations: {Groups:true, User:true} });
+            const user = await this.registrationRepository.findOne({where: {id_registrations : id}, relations: {Group:true, User:true} });
             return user ? this.toDomain(user) : null;
         } catch (error) {
             console.log("Error obteniendo inscripción por id", error)
@@ -39,9 +44,9 @@ export class RegistrationAdapter implements RegistrationPort{
         }
     }
 
-    async getRegistrationsByGroups(groups: number): Promise<RegistrationDomain[] | null> {
+    async getRegistrationsByGroups(idGroups: number): Promise<RegistrationDomain[] | null> {
         try {
-            const registration = await this.registrationRepository.find({ where: { Groups:{id_group: groups}}, relations: {Groups:true, User:true} });
+            const registration = await this.registrationRepository.find({ where: { Group:{id_group: idGroups}}, relations: {Group:true, User:true} });
             return registration.map(this.toDomain);
         } catch (error) {
             console.log("Error obteniendo inscripciones por grupos", error);
@@ -49,9 +54,9 @@ export class RegistrationAdapter implements RegistrationPort{
         }
     }
 
-    async getRegistrationsByUser(id: number): Promise<RegistrationDomain[] | null> {
+    async getRegistrationsByUser(idUser: number): Promise<RegistrationDomain[] | null> {
         try {
-            const registration = await this.registrationRepository.find({ where: {User:{id: id}}, relations: {Groups:true, User:true} });
+            const registration = await this.registrationRepository.find({ where: {User:{id: idUser}}, relations: {Group:true, User:true} });
             return registration.map(this.toDomain);
         } catch (error) {
             console.log("Error obteniendo inscripciones por usuario", error);
@@ -61,7 +66,7 @@ export class RegistrationAdapter implements RegistrationPort{
 
     async getAllRegistrations(): Promise<RegistrationDomain[]> {
         try {
-            const registration = await this.registrationRepository.find({where : {status_registrations:1},  relations: {Groups:true, User:true}});
+            const registration = await this.registrationRepository.find({where : {status_registrations:1}, relations: {Group:true, User:true}});
             return registration.map(this.toDomain);
         } catch (error) {
             console.log("Error obteniendo usuarios", error)

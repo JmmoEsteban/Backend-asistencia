@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from '../../../users/infraestructure/entities/User';
 import { Group } from '../../../groups/infraestructure/entities/Group';
 
@@ -7,13 +7,13 @@ export class Registration{
     @PrimaryGeneratedColumn()
     id_registrations!:number;
 
-    @ManyToMany(()=> User)
-    @JoinColumn({name:"id"})
+    @ManyToOne(()=> User)
+    @JoinColumn({name:"id_users"})
     User!:User;
 
-    @ManyToMany(()=> Group)
-    @JoinColumn({name:"id_group"})
-    Groups!:Group;
+    @ManyToOne(()=> Group)
+    @JoinColumn({name:"id_groups"})
+    Group!:Group;
 
     @Column({type:"integer"})
     status_registrations!:number;
