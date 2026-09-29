@@ -1,7 +1,7 @@
 import Joi from 'joi';
 
 export type ReturnAttendanceData= Partial<{
-    date : Date;
+    date : string;
     user_id : number;
     session_id: number;
     status: number;
@@ -14,7 +14,7 @@ type ValidationUpdateAttendanceData={
 
 function validateAttendanceData(data: any): ValidationUpdateAttendanceData{
     const attendanceSchema= Joi.object({
-        date : Joi.date().messages({'date.base' : 'la fecha debe ser valida'}),
+        date : Joi.string().messages({'date.base' : 'la fecha debe ser valida'}),
         user_id : Joi.number().integer().messages({
             'number.base' : 'El ID del usuario debe ser un numero', 'number.integer' : 'El ID del usuario debe ser entero'}),
         session_id : Joi.number().integer().messages({

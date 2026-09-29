@@ -13,7 +13,7 @@ type ValidationSubjectsData={
 function validateSubjectsData(data: any): ValidationSubjectsData{
     const subjectsSchema= Joi.object({
         name : Joi.string().required().messages({'name.empty' : 'el nombre es requerido'}),
-        status : Joi.number().required().integer().valid(0, 1).messages({
+        status : Joi.number().integer().valid(0, 1).messages({
             'number.empty' : 'El status es requerido', 'number.integer' : 'El status debe ser entero', 'any.only' : 'El status solo puede ser 0 o 1'}),
     }).unknown(false);
 

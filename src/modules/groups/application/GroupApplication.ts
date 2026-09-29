@@ -12,7 +12,7 @@ export class GroupApplication {
         return await this.port.createGroup(group);
     }
 
-    async updateGroup(id: number, group: Partial<Group>): Promise<boolean>{
+    async updateGroup(id: number, group: Partial<Omit<Group, "subjects" | "programs" | "promotion">>): Promise<boolean>{
         const groupExists = await this.port.getByIdGroup(id);
         if(!groupExists){
             throw new Error('Grupo no encontrado');

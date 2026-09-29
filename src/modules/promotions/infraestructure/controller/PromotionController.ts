@@ -14,7 +14,7 @@ export class PromotionController {
     async createPromotion(req: Request, res: Response): Promise<Response> {
         try {
             const { name_promotion, id_programs, status_promotions } = loadPromotionData(req.body);
-            const promotion: Omit<Promotion, "id_promotion"> = {
+            const promotion: Omit<Promotion, "id_promotion" | "Programs"> = {
                 name_promotion,
                 id_programs,
                 status_promotions

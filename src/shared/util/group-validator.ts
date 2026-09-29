@@ -3,7 +3,7 @@ import Joi from "joi";
 export type ReturnGroupData = {
     access_code_group: string;
     id_subjects: number;
-    id_promotions: number;
+    id_promotion: number;
     id_programs: number;
     status_group: number;
 };
@@ -25,7 +25,7 @@ function validateGroupData(data: any): ValidationGroupData {
             'number.integer': 'El ID de la materia debe ser entero',
             'number.positive': 'El ID de la materia debe ser positivo',
         }),
-        id_promotions: Joi.number().required().integer().positive().messages({
+        id_promotion: Joi.number().required().integer().positive().messages({
             'number.empty': 'El ID de la promoción es requerido',
             'number.base': 'El ID de la promoción debe ser un número',
             'number.integer': 'El ID de la promoción debe ser entero',

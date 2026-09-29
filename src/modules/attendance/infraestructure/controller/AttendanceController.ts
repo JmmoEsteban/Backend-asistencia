@@ -16,7 +16,10 @@ export class AttendanceController{
     async createAttendance(req: Request, res: Response){
         try {
             const {date, user_id, session_id, status} = loadAttendanceData(req.body);
-            const attendance: Omit<Attendance, "id"> = {date, user_id, session_id, status};
+            const attendance: Omit<Attendance, "id" | "user" | "session"> = {
+                date, user_id, 
+                session_id, status
+            };
             const attendanceId = await this.app.createAttendance(attendance);
             return res
                 .status(201)
@@ -105,10 +108,8 @@ export class AttendanceController{
                 return res.status(400).json({message: "Fecha invalida"});
             }
 
-            const date = new Date(dateParam);
-            if(isNaN(date.getTime())) return res.status(400).json({ error: "Formato de fecha invalida"})
-
-            const attendance = await this.app.getAttendanceByDate(date);
+            const attendance = await this.app.getAttendanceByDate(dateParam);
+            
             if (!attendance)
                 return res.status(400).json({ message: "Asistencia no encontrada" });
             return res.status(200).json(attendance);

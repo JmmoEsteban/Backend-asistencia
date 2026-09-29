@@ -1,7 +1,7 @@
 import Joi from 'joi';
 
 export type ReturnSessionData= Partial<{
-    date : Date;
+    date : string;
     day : number;
     id_group: number;
     status: number;
@@ -14,7 +14,7 @@ type ValidationUpdateSessionData={
 
 function validateSessionData(data: any): ValidationUpdateSessionData{
     const sessionSchema= Joi.object({
-        date : Joi.date().messages({'date.base' : 'la fecha debe ser valida'}),
+        date : Joi.string().messages({'date.base' : 'la fecha debe ser valida'}),
         day : Joi.number().integer().messages({
             'number.base' : 'El dia debe ser un numero', 'number.integer' : 'El dia debe ser entero'}),
         id_group : Joi.number().integer().messages({

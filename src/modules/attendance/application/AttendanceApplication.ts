@@ -9,8 +9,8 @@ export class AttendanceApplication{
         this.port = port;
     }
 
-    async createAttendance(attendance: Omit<Attendance, "id">): Promise<number>{
-        const existAttendance = await this.port.getAttendanceByUser(attendance.user_id);
+    async createAttendance(attendance: Omit<Attendance, "id" | "user" | "session">): Promise<number>{
+        // const existAttendance = await this.port.getAttendanceByUser(attendance.user_id);
         // if (existAttendance){
         //     throw new Error("El usuario ya cuenta con registro de asistencia");
         // }
@@ -21,7 +21,7 @@ export class AttendanceApplication{
         return await this.port.getAttendanceById(id);
     }
 
-    async getAttendanceByDate(date: Date): Promise<Attendance[] | null>{
+    async getAttendanceByDate(date: string): Promise<Attendance[] | null>{
         return await this.port.getAttendanceByDate(date);
     }
 
@@ -37,8 +37,8 @@ export class AttendanceApplication{
         return await this.port.getAllAttendance();
     }
 
-    async updateAttendance(id: number, attendance: Partial<Attendance>): Promise<boolean>{
-        const existAttendance = this.port.getAttendanceById(id);
+    async updateAttendance(id: number, attendance: Partial<Omit<Attendance, "user" | "session" | "user_id">>): Promise<boolean>{
+        const existAttendance = await this.port.getAttendanceById(id);
         if (!existAttendance){
             throw new Error("Asistencia no encontrada"); 
         }

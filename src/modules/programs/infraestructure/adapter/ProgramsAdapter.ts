@@ -41,7 +41,7 @@ export class ProgramsAdapter implements ProgramsPort{
             if (!existPrograms) return false;
 
             Object.assign(existPrograms, {
-                name_programs: programs.name ?? existPrograms.name,
+                name: programs.name ?? existPrograms.name,
             });
 
             await this.programsRepository.save(existPrograms);
@@ -52,20 +52,20 @@ export class ProgramsAdapter implements ProgramsPort{
             throw new Error("Error al actualizar el programa");
         }
     }
-    async deletePrograms(id: number): Promise<boolean> {
-        try {
-            const existPrograms = await this.programsRepository.findOne({where: {id: id}});
-            if (!existPrograms) return false;
-            Object.assign(existPrograms, {
-                status_programs: 0
-            })
-            await this.programsRepository.save(existPrograms);
-            return true;
-        } catch (error) {
-            console.error("Error al dar de baja el registro de programa");
-            throw new Error("Error al dar de baja el programa");
-        }
-    }
+    // async deletePrograms(id: number): Promise<boolean> {
+    //     try {
+    //         const existPrograms = await this.programsRepository.findOne({where: {id: id}});
+    //         if (!existPrograms) return false;
+    //         Object.assign(existPrograms, {
+    //             status_programs: 0
+    //         })
+    //         await this.programsRepository.save(existPrograms);
+    //         return true;
+    //     } catch (error) {
+    //         console.error("Error al dar de baja el registro de programa");
+    //         throw new Error("Error al dar de baja el programa");
+    //     }
+    // }
     async getProgramsById(id: number): Promise<ProgramsDomain | null> {
         try {
             const programs = await this.programsRepository.findOne({where: {id: id}});

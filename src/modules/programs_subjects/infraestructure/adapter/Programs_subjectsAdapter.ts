@@ -20,7 +20,7 @@ export class Programs_subjectsAdapter implements Programs_subjectsPort{
             id_subjects: programs_subjects.Subjects.id_subjects,
             programs: programs_subjects.Programs,
             subjects: programs_subjects.Subjects,
-            status: programs_subjects.status_programs_subjects
+            status: programs_subjects.status_programs_subject
         }
     }
 
@@ -28,13 +28,13 @@ export class Programs_subjectsAdapter implements Programs_subjectsPort{
         const programs_subjectsEntity = new Programs_subjectsEntity();
         programs_subjectsEntity.Programs.id = programs_subjects.id_programs;
         programs_subjectsEntity.Subjects.id_subjects = programs_subjects.id_subjects;
-        programs_subjectsEntity.status_programs_subjects = programs_subjects.status;
+        programs_subjectsEntity.status_programs_subject = programs_subjects.status;
         return programs_subjectsEntity;
     }
 
     async getPrograms_subjectsById(id: number): Promise<Programs_subjectsDomain | null> {
         try {
-            const user = await this.programs_subjectsRepository.findOne({where: {id_programs_subjects : id}, relations: {Programs:true}});
+            const user = await this.programs_subjectsRepository.findOne({where: {id_programs_subjects : id}, relations: {Programs:true, Subjects:true}});
             return user ? this.toDomain(user) : null;
         } catch (error) {
             console.log("Error obteniendo programas y materias por id", error)
@@ -64,7 +64,7 @@ export class Programs_subjectsAdapter implements Programs_subjectsPort{
 
     async getAllPrograms_subjects(): Promise<Programs_subjectsDomain[]> {
         try {
-            const programs_subjects = await this.programs_subjectsRepository.find({where: {status_programs_subjects: 1}, relations: {Programs:true, Subjects:true}});
+            const programs_subjects = await this.programs_subjectsRepository.find({where: {status_programs_subject: 1}, relations: {Programs:true, Subjects:true}});
             return programs_subjects.map(this.toDomain);
         } catch (error) {
             console.log("Error obteniendo usuarios", error)

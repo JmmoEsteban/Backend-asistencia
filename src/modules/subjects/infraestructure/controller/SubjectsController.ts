@@ -101,7 +101,7 @@ export class SubjectsController{
  
 
     async getSubjectsByName(req: Request, res: Response): Promise<Response> { 
-        try { // Validación del email usando Joi 
+        try {  
             const {name} = loadSubjectsData(req.params);  
             const subjects = await this.app.getSubjectsByName(name);  
             if (!subjects) { 

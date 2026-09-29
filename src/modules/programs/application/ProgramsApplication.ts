@@ -10,9 +10,9 @@ export class ProgramsApplication{
 
     async createPrograms(Programs: Omit<Programs, "id">): Promise<number>{
         const existPrograms = await this.port.getProgramsByName(Programs.name);
-        // if (existAttendance){
-        //     throw new Error("El usuario ya cuenta con registro de asistencia");
-        // }
+        if (!existPrograms){
+            throw new Error("Ya existe un programa con ese nombre");
+        }
         return this.port.createPrograms(Programs);
     };
 
@@ -37,8 +37,8 @@ export class ProgramsApplication{
         return await this.port.updatePrograms(id, programs);
     }
 
-    async deletePrograms(id: number): Promise<boolean>{
-        return await this.port.deletePrograms(id);
-    }
+    // async deletePrograms(id: number): Promise<boolean>{
+    //     return await this.port.deletePrograms(id);
+    // }
 
 }

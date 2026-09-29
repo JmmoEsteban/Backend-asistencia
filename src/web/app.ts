@@ -9,6 +9,8 @@ import RolesRoutes from "../modules/roles/infraestructure/routes/RolesRoutes";
 import ProgramsRoutes from "../modules/programs/infraestructure/routes/ProgramsRoutes";
 import RegistrationRoutes from "../modules/registrations/infraestructure/routes/RegistrationRoutes";
 import SubjectsRoutes from "../modules/subjects/infraestructure/routes/SubjectsRoutes";
+import { Programs_subjects } from "../modules/programs_subjects/infraestructure/entities/Programs_subjects";
+import Programs_subjectsRoutes from "../modules/programs_subjects/infraestructure/routes/Programs_subjectsRoutes";
 
 class App{
     private app: express.Application;
@@ -33,7 +35,8 @@ class App{
         this.app.use("/api", RolesRoutes);
         this.app.use("/api", ProgramsRoutes);
         this.app.use("/api", RegistrationRoutes);
-        this.app.use("/api", SubjectsRoutes)
+        this.app.use("/api", SubjectsRoutes),
+        this.app.use("/api", Programs_subjectsRoutes)
     }
 
     getApp(){
