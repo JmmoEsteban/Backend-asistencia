@@ -12,16 +12,16 @@ export class Programs_subjects{
     id_programs:number;
 
     @Column({type: "int"})
-    id_subject:number;
+    id_subjects:number;
 
     @ManyToOne(()=>Programs)
-    @JoinColumn({name:"programs_id"})
+    @JoinColumn({name:"id_programs"})
     Programs!:Programs;
 
     @ManyToOne(()=>Subjects)
-    @JoinColumn({name:"subjects_id"})
+    @JoinColumn({name:"id_subjects"})
     Subjects!:Subjects;
 
     @Column({type:"integer"})
-    status_programs_subjects!:number;
+    status_programs_subject!:number;
 }

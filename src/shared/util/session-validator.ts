@@ -1,7 +1,7 @@
 import Joi from "joi";
 
 export type ReturnSessionData={
-    date : Date;
+    date : string;
     day : number;
     id_group: number;
     status: number;
@@ -14,7 +14,7 @@ type ValidationSessionData={
 
 function validateSessionData(data: any): ValidationSessionData{
     const sessionSchema= Joi.object({
-        date : Joi.date().required().messages({'date.empty' : 'la fecha es requerida'}),
+        date : Joi.string().required().messages({'date.empty' : 'la fecha es requerida'}),
         day : Joi.number().required().integer().messages({
             'number.empty' : 'El dia es requerido', 'number.integer' : 'El dia del usuario debe ser entero'}),
         id_group : Joi.number().required().integer().messages({

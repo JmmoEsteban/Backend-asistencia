@@ -26,16 +26,16 @@ export class SessionAdapter implements SessionPort{
         }
     }
 
-    private toEntity(session: Omit<SessionDomain, "id">): SessionEntity{
+    private toEntity(session: Omit<SessionDomain, "id" | "group">): SessionEntity{
         const sessionEntity = new SessionEntity();
         sessionEntity.date_session = session.date;
         sessionEntity.day_session = session.day;
-        sessionEntity.Group.id_group = session.id_group;
+        sessionEntity.Group = {id_group: session.id_group} as Group,
         sessionEntity.status_session = session.status;
         return sessionEntity;
     }
 
-    async createSession(session: Omit<SessionDomain, "id">): Promise<number> {
+    async createSession(session: Omit<SessionDomain, "id" | "group">): Promise<number> {
         try {
             const newSession = this.toEntity(session);
             const savedSession = await this.sessionRepository.save(newSession);
@@ -53,7 +53,7 @@ export class SessionAdapter implements SessionPort{
             Object.assign(existSession, {
                 date_session: session.date ?? existSession.date_session,
                 day_session: session.day ?? existSession.day_session,
-                id_group: session.id_group ?? existSession.Group.id_group,
+                Group: session.id_group ?{ id_group: session.id_group} as Group : existSession.Group,
                 status_session: session.status ?? existSession.status_session
             });
 
@@ -88,7 +88,7 @@ export class SessionAdapter implements SessionPort{
             throw new Error("Error al obtener la session por ID");
         }
     }
-    async getSessionByDate(date: Date): Promise<SessionDomain[] | null> {
+    async getSessionByDate(date: string): Promise<SessionDomain[] | null> {
         try {
             const session = await this.sessionRepository.find({where: {date_session: date}, relations: {Group: true}});
             return session ? session.map(this.toDomain) : null;

@@ -18,7 +18,7 @@ export class SessionController{
     async createSession(req: Request, res: Response){
         try {
             const {date, day, id_group, status} = loadSessionData(req.body);
-            const session: Omit<Session, "id"> = {date, day, id_group, status};
+            const session: Omit<Session, "id" | "group"> = {date, day, id_group, status};
             const sessionId = await this.app.createSession(session);
             return res
                 .status(201)
@@ -99,9 +99,35 @@ export class SessionController{
         }
     }
 
+    async getAttendanceByDate(req: Request, res: Response): Promise<Response>{
+        try {
+            const dateParam = req.params.date
+            // const date = new Date(req.params.date);
+            if (!dateParam || Array.isArray(dateParam)){
+                return res.status(400).json({message: "Fecha invalida"});
+            }
+
+            const attendance = await this.app.getSessionByDate(dateParam);
+            
+            if (!attendance)
+                return res.status(400).json({ message: "Sesion no encontrada" });
+            return res.status(200).json(attendance);
+        } catch (error) {
+            if (error instanceof Error){
+                return res
+                    .status(500)
+                    .json({
+                        error: "Error interno del servidor",
+                        details: error.message,
+                    });
+            }
+            return res.status(500).json({ error: "Error interno del servidor" });
+        }
+    }
+
     async getSessionByGroup(req: Request, res: Response): Promise<Response>{
         try {
-            const id = Number(req.params.sessionid);
+            const id = Number(req.params.grupoid);
             if (Number.isNaN(id)) return res.status(400).json({ error: "ID invalido"});
 
             const session = await this.app.getSessionByGroup(id);

@@ -13,7 +13,7 @@ export class Group{
     access_code_group!:string;
 
     @ManyToOne(() => Promotion)
-    @JoinColumn({ name: "id_promotions" })
+    @JoinColumn({ name: "id_promotion" })
     Promotion!:Promotion;
 
     @ManyToOne(() => Programs)

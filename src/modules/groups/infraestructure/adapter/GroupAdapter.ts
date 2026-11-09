@@ -4,6 +4,8 @@ import type { Group as GroupDomain } from "../../domain/Group";
 import type { GroupPort } from "../../domain/GroupPort";
 import { AppDataSource } from "../../../../shared/config/data-base";
 import { Promotion } from "../../../promotions/infraestructure/entities/Promotion";
+import type { Subjects } from "../../../subjects/infraestructure/entities/Subjects";
+import type { Programs } from "../../../programs/infraestructure/entities/Programs";
 
 export class GroupAdapter implements GroupPort {
 
@@ -18,8 +20,8 @@ export class GroupAdapter implements GroupPort {
         return {
             id_group: group.id_group,
             access_code_group: group.access_code_group,
-            id_subjects: group.Subjects.id_subject,
-            id_promotions: group.Promotion.id_promotion,
+            id_subjects: group.Subjects.id_subjects,
+            id_promotion: group.Promotion.id_promotion,
             id_programs: group.Programs.id,
             status_group: group.status_group,
             subjects: group.Subjects,
@@ -33,9 +35,9 @@ export class GroupAdapter implements GroupPort {
     private toEntity(group: Omit<GroupDomain, "id_group" | "subjects" | "programs" | "promotion">): GroupEntity {
         const groupEntity = new GroupEntity();
         groupEntity.access_code_group = group.access_code_group;
-        groupEntity.Subjects.id_subject = group.id_subjects;
-        groupEntity.Promotion.id_promotion = group.id_promotions;
-        groupEntity.Programs.id = group.id_programs;
+        groupEntity.Subjects = {id_subjects:group.id_subjects} as Subjects;
+        groupEntity.Promotion = {id_promotion:group.id_promotion} as Promotion;
+        groupEntity.Programs = {id:group.id_programs} as Programs;
         groupEntity.status_group = group.status_group;
         return groupEntity;
     }
@@ -51,16 +53,16 @@ export class GroupAdapter implements GroupPort {
         }
     }
 
-    async updateGroup(id: number, group: Partial<GroupDomain>): Promise<boolean> {
+    async updateGroup(id: number, group: Partial<Omit<GroupDomain, "subjects" | "programs" | "promotion">>): Promise<boolean> {
         try {
             const groupExists = await this.groupRepository.findOne({ where: { id_group: id } });
             if (!groupExists) return false;
 
             Object.assign(groupExists, {
                 access_code_group: group.access_code_group ?? groupExists.access_code_group,
-                id_subjects: group.id_subjects ?? groupExists.Subjects.id_subject,
-                id_promotions: group.id_promotions ?? groupExists.Promotion.id_promotion,
-                id_programs: group.id_programs ?? groupExists.Programs.id,
+                Subjects: group.id_subjects ? {id_subjects: group.id_subjects} as Subjects : groupExists.Subjects,
+                Promotion: group.id_promotion ? {id_promotion: group.id_promotion} as Promotion : groupExists.Promotion,
+                Programs: group.id_programs ? {id: group.id_programs} as Programs : groupExists.Programs,
                 status_group: group.status_group ?? groupExists.status_group,
             });
 
@@ -74,14 +76,16 @@ export class GroupAdapter implements GroupPort {
 
     async deleteGroup(id: number): Promise<boolean> {
         try {
-            const groupExists = await this.groupRepository.findOne({ where: { id_group: id } });
-            if (!groupExists) return false;
-
-            await this.groupRepository.remove(groupExists);
+            const existGroup = await this.groupRepository.findOne({where: {id_group: id}});
+            if (!existGroup) return false;
+            Object.assign(existGroup, {
+                status_group: 0
+            })
+            await this.groupRepository.save(existGroup);
             return true;
         } catch (error) {
-            console.error("Error al eliminar grupo", error);
-            throw new Error("Error al eliminar grupo");
+            console.error("Error al dar de baja el registro de asistencia");
+            throw new Error("Error al dar de baja la asistencia");
         }
     }
 
@@ -117,7 +121,7 @@ export class GroupAdapter implements GroupPort {
 
     async getByIdSubject(SubjectId: number): Promise<GroupDomain[]> {
         try {
-            const group = await this.groupRepository.find({ where: { Subjects: {id_subject:SubjectId}}, relations: {Subjects: true, Promotion: true, Programs: true}});
+            const group = await this.groupRepository.find({ where: { Subjects: {id_subjects:SubjectId}}, relations: {Subjects: true, Promotion: true, Programs: true}});
             return group.map(group=>this.toDomain(group));
         } catch (error) {
             console.error("Error obteniendo grupos por materias", error);

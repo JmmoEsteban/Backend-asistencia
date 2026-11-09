@@ -1,10 +1,9 @@
 //import { number } from "joi";
+import { loadUpdateProgramsData } from "../../../../shared/util/programs-update-validation";
 import { loadProgramsData } from "../../../../shared/util/programs-validator";
 import type { ProgramsApplication } from "../../application/ProgramsApplication";
 import type { Programs } from "../../domain/Programs";
 import { json, type Request, type Response } from "express";
-import { loadUpdateUserData } from "../../../../shared/util/user-update-validation";
-import { loadUpdateProgramsData } from "../../../../shared/util/programs-update-validation";
 
 export class ProgramsController{
     private app: ProgramsApplication;
@@ -116,26 +115,26 @@ export class ProgramsController{
         }
     }
 
-    async deletePrograms(req: Request, res: Response): Promise<Response>{
-        try {
-            const id = Number(req.params.id);
-            if (Number.isNaN(id)) return res.status(400).json({ error: "ID invalido"});
+    // async deletePrograms(req: Request, res: Response): Promise<Response>{
+    //     try {
+    //         const id = Number(req.params.id);
+    //         if (Number.isNaN(id)) return res.status(400).json({ error: "ID invalido"});
 
-            const deleted = await this.app.deletePrograms(id);
-            if (!deleted)
-                return res.status(400).json({ message:"Programa no encontrado" });
-            return res.status(200).json({message: "Programa eliminado con exito"});
-        } catch (error) {
-            if (error instanceof Error){
-                return res
-                    .status(500)
-                    .json({
-                        error: "Error interno del servidor",
-                        details: error.message,
-                    });
-            }
-            return res.status(500).json({ error: "Error interno del servidor" });
-        }
-    }
+    //         const deleted = await this.app.deletePrograms(id);
+    //         if (!deleted)
+    //             return res.status(400).json({ message:"Programa no encontrado" });
+    //         return res.status(200).json({message: "Programa eliminado con exito"});
+    //     } catch (error) {
+    //         if (error instanceof Error){
+    //             return res
+    //                 .status(500)
+    //                 .json({
+    //                     error: "Error interno del servidor",
+    //                     details: error.message,
+    //                 });
+    //         }
+    //         return res.status(500).json({ error: "Error interno del servidor" });
+    //     }
+    // }
 
 }

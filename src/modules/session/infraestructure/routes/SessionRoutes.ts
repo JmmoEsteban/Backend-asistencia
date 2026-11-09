@@ -33,6 +33,14 @@ router.get("/sesion/id/:id", async (req, res)=>{
     }
 })
 
+router.get("/sesiones/date/:date", async (req, res)=>{
+    try {
+        await sessionController.getAttendanceByDate(req, res);
+    } catch (error) {
+        res.status(500).json({ message: "Error en la obtencion de la sesion"});
+    }
+})
+
 router.get("/sesiones/grupoid/:grupoid", async (req, res)=>{
     try {
         await sessionController.getSessionByGroup(req, res);

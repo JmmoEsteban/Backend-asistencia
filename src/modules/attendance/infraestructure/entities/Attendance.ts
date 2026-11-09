@@ -7,7 +7,7 @@ export class Attendance {
     @PrimaryGeneratedColumn()
     id_attendances!: number;
     @Column({ type: "date"})
-    date_attendances!: Date;
+    date_attendances!: string;
     @ManyToOne(() => User)
     @JoinColumn({ name: "id_user"})
     User!: User;

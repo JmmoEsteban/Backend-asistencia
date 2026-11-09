@@ -49,7 +49,7 @@ router.get("/asistencias/userid/:userid", async (req, res)=>{
     }
 })
 
-router.get("/asistencias/ /:sesionid", async (req, res)=>{
+router.get("/asistencias/sessionid/:sessionid", async (req, res)=>{
     try {
         await attendanceController.getAttendanceBySession(req, res);
     } catch (error) {

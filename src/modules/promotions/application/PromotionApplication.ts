@@ -8,11 +8,11 @@ export class PromotionApplication {
         this.port = port;
     }
 
-    async createPromotion(promotion: Omit<Promotion, "id_promotion">): Promise<number> {
+    async createPromotion(promotion: Omit<Promotion, "id_promotion" | "Programs">): Promise<number> {
         return await this.port.createPromotion(promotion);
     }
 
-    async updatePromotion(id: number, promotion: Partial<Promotion>): Promise<boolean> {
+    async updatePromotion(id: number, promotion: Partial<Omit<Promotion, "Programs">>): Promise<boolean> {
         const exist = await this.port.getPromotionById(id);
         if (!exist) {
             throw new Error("Promocion no encontrada");

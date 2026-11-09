@@ -13,11 +13,11 @@ export class GroupController {
 
     async createGroup(req: Request, res: Response): Promise<Response> {
         try {
-            const { access_code_group, id_subjects, id_promotions, id_programs, status_group } = loadGroupData(req.body);
+            const { access_code_group, id_subjects, id_promotion, id_programs, status_group } = loadGroupData(req.body);
             const group: Omit<Group, "id_group" | "subjects" | "programs" | "promotion"> = {
                 access_code_group,
                 id_subjects,
-                id_promotions,
+                id_promotion,
                 id_programs,
                 status_group
             };

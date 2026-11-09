@@ -13,7 +13,6 @@ type ValidationUpdateProgramsData={
 function validateProgramsData(data: any): ValidationUpdateProgramsData{
     const programsSchema= Joi.object({
         name : Joi.string().messages({'name.base' : 'el nombre debe ser valido'}),
-        id_subject: Joi.number().required()
     }).unknown(false)
     .or("name", "status");
 

@@ -49,12 +49,12 @@ router.put("/programs/actualizar/id/:id", async (req, res)=>{
     }
 })
 
-router.put("/programs/eliminar/id/:id", async (req, res)=>{
-    try {
-        await programsController.deletePrograms(req, res);
-    } catch (error) {
-        res.status(500).json({ message: "Error en la eliminacion del programa"});
-    }
-})
+// router.put("/programs/eliminar/id/:id", async (req, res)=>{
+//     try {
+//         await programsController.deletePrograms(req, res);
+//     } catch (error) {
+//         res.status(500).json({ message: "Error en la eliminacion del programa"});
+//     }
+// })
 
 export default router;

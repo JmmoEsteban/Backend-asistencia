@@ -1,5 +1,5 @@
 import type { Repository } from "typeorm";
-import { Promotion as PromotionEntity } from "../entities/Promotion";
+import { Promotion, Promotion as PromotionEntity } from "../entities/Promotion";
 import type { Promotion as PromotionDomain } from "../../domain/Promotion";
 import type { PromotionPort } from "../../domain/PromotionPort";
 import { AppDataSource } from "../../../../shared/config/data-base";
@@ -22,7 +22,7 @@ export class PromotionAdapter implements PromotionPort {
         };
     }
 
-    private toEntity(promotion: Omit<PromotionDomain, "id_promotion">): PromotionEntity {
+    private toEntity(promotion: Omit<PromotionDomain, "id_promotion" | "Programs">): PromotionEntity {
         const promotionEntity = new PromotionEntity();
         promotionEntity.name_promotion = promotion.name_promotion;
         promotionEntity.Programs = {id: promotion.id_programs} as Programs;
@@ -30,7 +30,7 @@ export class PromotionAdapter implements PromotionPort {
         return promotionEntity;
     }
 
-    async createPromotion(promotion: Omit<PromotionDomain, "id_promotion">): Promise<number> {
+    async createPromotion(promotion: Omit<PromotionDomain, "id_promotion" | "Programs">): Promise<number> {
         try {
             const newPromotion = this.toEntity(promotion);
             const savedPromotion = await this.promotionRepository.save(newPromotion);
@@ -41,14 +41,14 @@ export class PromotionAdapter implements PromotionPort {
         }
     }
 
-    async updatePromotion(id: number, promotion: Partial<PromotionDomain>): Promise<boolean> {
+    async updatePromotion(id: number, promotion: Partial<Omit<PromotionDomain, "Programs">>): Promise<boolean> {
         try {
             const existPromotion = await this.promotionRepository.findOne({ where: { id_promotion: id } });
             if (!existPromotion) return false;
 
             Object.assign(existPromotion, {
                 name_promotion: promotion.name_promotion ?? existPromotion.name_promotion,
-                id_programs: promotion.id_programs ?? existPromotion.Programs.id,
+                Programs: promotion.id_programs ? {id: promotion.id_programs} as Programs : existPromotion.Programs,
                 status_promotions: promotion.status_promotions ?? existPromotion.status_promotions,
             });
 
@@ -62,14 +62,16 @@ export class PromotionAdapter implements PromotionPort {
 
     async deletePromotion(id: number): Promise<boolean> {
         try {
-            const existPromotion = await this.promotionRepository.findOne({ where: { id_promotion: id } });
+            const existPromotion = await this.promotionRepository.findOne({where: {id_promotion: id}});
             if (!existPromotion) return false;
-
-            await this.promotionRepository.remove(existPromotion);
+            Object.assign(existPromotion, {
+                status_promotions: 0
+            })
+            await this.promotionRepository.save(existPromotion);
             return true;
         } catch (error) {
-            console.error("Error al eliminar promocion", error);
-            throw new Error("Error al eliminar promocion");
+            console.error("Error al dar de baja el registro de promocion");
+            throw new Error("Error al dar de baja la promocion");
         }
     }
 

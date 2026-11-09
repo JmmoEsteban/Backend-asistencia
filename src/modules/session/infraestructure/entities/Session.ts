@@ -6,7 +6,7 @@ export class Session {
     @PrimaryGeneratedColumn()
     id_session!: number;
     @Column({ type: "date"})
-    date_session!: Date;
+    date_session!: string;
     @Column({ type: "int"})
     day_session!: number;
     @JoinColumn({ name: "id_group"})
